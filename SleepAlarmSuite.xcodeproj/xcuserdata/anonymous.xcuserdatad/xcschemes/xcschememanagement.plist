@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>Sleep Alarm Suite.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>SleepAlarmSuite Watch App.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>B7A5FD6C2FC8F3A0000C0EC5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7D61A5D2F0FA60A004E6D3A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7D61A6A2F0FA60C004E6D3A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7D61A742F0FA60C004E6D3A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>

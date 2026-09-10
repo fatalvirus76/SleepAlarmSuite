@@ -1,0 +1,771 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B7A100023052295500CE363B /* SleepAlarmSuite Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = B7D61A5E2F0FA60A004E6D3A /* SleepAlarmSuite Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B7D61A6C2F0FA60C004E6D3A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7D61A562F0FA609004E6D3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B7D61A5D2F0FA60A004E6D3A;
+			remoteInfo = "SleepAlarmSuite Watch App";
+		};
+		B7D61A762F0FA60C004E6D3A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7D61A562F0FA609004E6D3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B7D61A5D2F0FA60A004E6D3A;
+			remoteInfo = "SleepAlarmSuite Watch App";
+		};
+		B7A100003052295500CE363B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7D61A562F0FA609004E6D3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B7D61A5D2F0FA60A004E6D3A;
+			remoteInfo = "SleepAlarmSuite Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B7A100033052295500CE363B /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolder = Product;
+			files = (
+				B7A100023052295500CE363B /* SleepAlarmSuite Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+
+/* Begin PBXFileReference section */
+		B7D61A5E2F0FA60A004E6D3A /* SleepAlarmSuite Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SleepAlarmSuite Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7D61A6B2F0FA60C004E6D3A /* SleepAlarmSuite Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SleepAlarmSuite Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7D61A752F0FA60C004E6D3A /* SleepAlarmSuite Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SleepAlarmSuite Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7E49B513052295500CE363B /* Sleep Alarm Suite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sleep Alarm Suite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		B7D61A602F0FA60A004E6D3A /* SleepAlarmSuite Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "SleepAlarmSuite Watch App";
+			sourceTree = "<group>";
+		};
+		B7D61A6E2F0FA60C004E6D3A /* SleepAlarmSuite Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "SleepAlarmSuite Watch AppTests";
+			sourceTree = "<group>";
+		};
+		B7D61A782F0FA60C004E6D3A /* SleepAlarmSuite Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "SleepAlarmSuite Watch AppUITests";
+			sourceTree = "<group>";
+		};
+		B7E49B523052295500CE363B /* Sleep Alarm Suite */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Sleep Alarm Suite";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B7D61A5B2F0FA60A004E6D3A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7D61A682F0FA60C004E6D3A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7D61A722F0FA60C004E6D3A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7E49B4E3052295500CE363B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B7D61A552F0FA609004E6D3A = {
+			isa = PBXGroup;
+			children = (
+				B7E49B523052295500CE363B /* Sleep Alarm Suite */,
+				B7D61A602F0FA60A004E6D3A /* SleepAlarmSuite Watch App */,
+				B7D61A6E2F0FA60C004E6D3A /* SleepAlarmSuite Watch AppTests */,
+				B7D61A782F0FA60C004E6D3A /* SleepAlarmSuite Watch AppUITests */,
+				B7D61A5F2F0FA60A004E6D3A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B7D61A5F2F0FA60A004E6D3A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B7D61A5E2F0FA60A004E6D3A /* SleepAlarmSuite Watch App.app */,
+				B7D61A6B2F0FA60C004E6D3A /* SleepAlarmSuite Watch AppTests.xctest */,
+				B7D61A752F0FA60C004E6D3A /* SleepAlarmSuite Watch AppUITests.xctest */,
+				B7E49B513052295500CE363B /* Sleep Alarm Suite.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B7D61A5D2F0FA60A004E6D3A /* SleepAlarmSuite Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7D61A7F2F0FA60C004E6D3A /* Build configuration list for PBXNativeTarget "SleepAlarmSuite Watch App" */;
+			buildPhases = (
+				B7D61A5A2F0FA60A004E6D3A /* Sources */,
+				B7D61A5B2F0FA60A004E6D3A /* Frameworks */,
+				B7D61A5C2F0FA60A004E6D3A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B7D61A602F0FA60A004E6D3A /* SleepAlarmSuite Watch App */,
+			);
+			name = "SleepAlarmSuite Watch App";
+			packageProductDependencies = (
+			);
+			productName = "SleepAlarmSuite Watch App";
+			productReference = B7D61A5E2F0FA60A004E6D3A /* SleepAlarmSuite Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B7D61A6A2F0FA60C004E6D3A /* SleepAlarmSuite Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7D61A822F0FA60C004E6D3A /* Build configuration list for PBXNativeTarget "SleepAlarmSuite Watch AppTests" */;
+			buildPhases = (
+				B7D61A672F0FA60C004E6D3A /* Sources */,
+				B7D61A682F0FA60C004E6D3A /* Frameworks */,
+				B7D61A692F0FA60C004E6D3A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B7D61A6D2F0FA60C004E6D3A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B7D61A6E2F0FA60C004E6D3A /* SleepAlarmSuite Watch AppTests */,
+			);
+			name = "SleepAlarmSuite Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "SleepAlarmSuite Watch AppTests";
+			productReference = B7D61A6B2F0FA60C004E6D3A /* SleepAlarmSuite Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B7D61A742F0FA60C004E6D3A /* SleepAlarmSuite Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7D61A852F0FA60C004E6D3A /* Build configuration list for PBXNativeTarget "SleepAlarmSuite Watch AppUITests" */;
+			buildPhases = (
+				B7D61A712F0FA60C004E6D3A /* Sources */,
+				B7D61A722F0FA60C004E6D3A /* Frameworks */,
+				B7D61A732F0FA60C004E6D3A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B7D61A772F0FA60C004E6D3A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B7D61A782F0FA60C004E6D3A /* SleepAlarmSuite Watch AppUITests */,
+			);
+			name = "SleepAlarmSuite Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "SleepAlarmSuite Watch AppUITests";
+			productReference = B7D61A752F0FA60C004E6D3A /* SleepAlarmSuite Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		B7E49B503052295500CE363B /* Sleep Alarm Suite */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7E49B5B3052295B00CE363B /* Build configuration list for PBXNativeTarget "Sleep Alarm Suite" */;
+			buildPhases = (
+				B7E49B4D3052295500CE363B /* Sources */,
+				B7E49B4E3052295500CE363B /* Frameworks */,
+				B7E49B4F3052295500CE363B /* Resources */,
+				B7A100033052295500CE363B /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B7A100013052295500CE363B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B7E49B523052295500CE363B /* Sleep Alarm Suite */,
+			);
+			name = "Sleep Alarm Suite";
+			packageProductDependencies = (
+			);
+			productName = "Sleep Alarm Suite";
+			productReference = B7E49B513052295500CE363B /* Sleep Alarm Suite.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B7D61A562F0FA609004E6D3A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2630;
+				LastUpgradeCheck = 2630;
+				TargetAttributes = {
+					B7D61A5D2F0FA60A004E6D3A = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					B7D61A6A2F0FA60C004E6D3A = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = B7D61A5D2F0FA60A004E6D3A;
+					};
+					B7D61A742F0FA60C004E6D3A = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = B7D61A5D2F0FA60A004E6D3A;
+					};
+					B7E49B503052295500CE363B = {
+						CreatedOnToolsVersion = 26.3;
+					};
+				};
+			};
+			buildConfigurationList = B7D61A592F0FA609004E6D3A /* Build configuration list for PBXProject "SleepAlarmSuite" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B7D61A552F0FA609004E6D3A;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B7D61A5F2F0FA60A004E6D3A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B7D61A5D2F0FA60A004E6D3A /* SleepAlarmSuite Watch App */,
+				B7D61A6A2F0FA60C004E6D3A /* SleepAlarmSuite Watch AppTests */,
+				B7D61A742F0FA60C004E6D3A /* SleepAlarmSuite Watch AppUITests */,
+				B7E49B503052295500CE363B /* Sleep Alarm Suite */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B7D61A5C2F0FA60A004E6D3A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7D61A692F0FA60C004E6D3A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7D61A732F0FA60C004E6D3A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7E49B4F3052295500CE363B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B7D61A5A2F0FA60A004E6D3A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7D61A672F0FA60C004E6D3A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7D61A712F0FA60C004E6D3A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7E49B4D3052295500CE363B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B7D61A6D2F0FA60C004E6D3A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B7D61A5D2F0FA60A004E6D3A /* SleepAlarmSuite Watch App */;
+			targetProxy = B7D61A6C2F0FA60C004E6D3A /* PBXContainerItemProxy */;
+		};
+		B7D61A772F0FA60C004E6D3A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B7D61A5D2F0FA60A004E6D3A /* SleepAlarmSuite Watch App */;
+			targetProxy = B7D61A762F0FA60C004E6D3A /* PBXContainerItemProxy */;
+		};
+		B7A100013052295500CE363B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B7D61A5D2F0FA60A004E6D3A /* SleepAlarmSuite Watch App */;
+			targetProxy = B7A100003052295500CE363B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		B7D61A7D2F0FA60C004E6D3A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = AZCLR78F5U;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B7D61A7E2F0FA60C004E6D3A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = AZCLR78F5U;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		B7D61A802F0FA60C004E6D3A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AZCLR78F5U;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SleepAlarmSuite;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.fatalv.Sleep-Alarm-Suite;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Läser sömndata för att upptäcka när du somnat.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Appen skriver inte till hälsodata.";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatalv.Sleep-Alarm-Suite.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		B7D61A812F0FA60C004E6D3A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AZCLR78F5U;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = SleepAlarmSuite;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.fatalv.Sleep-Alarm-Suite;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Läser sömndata för att upptäcka när du somnat.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Appen skriver inte till hälsodata.";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatalv.Sleep-Alarm-Suite.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		B7D61A832F0FA60C004E6D3A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AZCLR78F5U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "fatalv.SleepAlarmSuite-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SleepAlarmSuite Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SleepAlarmSuite Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		B7D61A842F0FA60C004E6D3A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AZCLR78F5U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "fatalv.SleepAlarmSuite-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SleepAlarmSuite Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SleepAlarmSuite Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		B7D61A862F0FA60C004E6D3A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AZCLR78F5U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "fatalv.SleepAlarmSuite-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "SleepAlarmSuite Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		B7D61A872F0FA60C004E6D3A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AZCLR78F5U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "fatalv.SleepAlarmSuite-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "SleepAlarmSuite Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		B7E49B593052295B00CE363B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AZCLR78F5U;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				CODE_SIGN_ENTITLEMENTS = "Sleep Alarm Suite/Sleep Alarm Suite.entitlements";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Läser sömndata för att upptäcka när du somnat.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Appen skriver inte till hälsodata.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.fatalv.Sleep-Alarm-Suite";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B7E49B5A3052295B00CE363B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = AZCLR78F5U;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				CODE_SIGN_ENTITLEMENTS = "Sleep Alarm Suite/Sleep Alarm Suite.entitlements";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Läser sömndata för att upptäcka när du somnat.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Appen skriver inte till hälsodata.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.fatalv.Sleep-Alarm-Suite";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B7D61A592F0FA609004E6D3A /* Build configuration list for PBXProject "SleepAlarmSuite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7D61A7D2F0FA60C004E6D3A /* Debug */,
+				B7D61A7E2F0FA60C004E6D3A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7D61A7F2F0FA60C004E6D3A /* Build configuration list for PBXNativeTarget "SleepAlarmSuite Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7D61A802F0FA60C004E6D3A /* Debug */,
+				B7D61A812F0FA60C004E6D3A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7D61A822F0FA60C004E6D3A /* Build configuration list for PBXNativeTarget "SleepAlarmSuite Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7D61A832F0FA60C004E6D3A /* Debug */,
+				B7D61A842F0FA60C004E6D3A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7D61A852F0FA60C004E6D3A /* Build configuration list for PBXNativeTarget "SleepAlarmSuite Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7D61A862F0FA60C004E6D3A /* Debug */,
+				B7D61A872F0FA60C004E6D3A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B7E49B5B3052295B00CE363B /* Build configuration list for PBXNativeTarget "Sleep Alarm Suite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7E49B593052295B00CE363B /* Debug */,
+				B7E49B5A3052295B00CE363B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B7D61A562F0FA609004E6D3A /* Project object */;
+}
