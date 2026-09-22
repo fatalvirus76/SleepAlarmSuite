@@ -16,6 +16,7 @@ struct SleepAlarmWatchApp: App {
                 .environmentObject(wc)
                 .onAppear {
                     scheduler.refreshAuthStatus()
+                    wc.refreshStatus()
                     wc.planProvider = { [weak store] in store?.currentPlan }
                     wc.onRemotePlan = { [weak store, weak scheduler] plan in
                         guard let store, let scheduler else { return }

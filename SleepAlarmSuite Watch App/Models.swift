@@ -78,20 +78,67 @@ enum Preset: String, CaseIterable, Identifiable {
     }
 }
 
+enum StartModeOption: String, CaseIterable, Identifiable {
+    case now
+    case manual
+    case autoHK
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .now: return "Nu"
+        case .manual: return "Manuellt"
+        case .autoHK: return "Auto (HealthKit)"
+        }
+    }
+
+    var short: String {
+        switch self {
+        case .now: return "Nu"
+        case .manual: return "Klockan"
+        case .autoHK: return "Auto"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .now: return "bolt.fill"
+        case .manual: return "clock.fill"
+        case .autoHK: return "wand.and.stars"
+        }
+    }
+}
+
+/// Nycklar för appens inställningar (delas mellan flikarna).
+enum SettingsKeys {
+    static let startMode = "startModeRaw"
+    static let manualHour = "manualHour"
+    static let manualMinute = "manualMinute"
+}
+
 extension Date {
-    func formattedTimeSV() -> String {
+    private static let timeFormatter: DateFormatter = {
         let f = DateFormatter()
         f.locale = Locale(identifier: "sv_SE")
         f.dateFormat = "HH:mm"
-        return f.string(from: self)
-    }
+        return f
+    }()
 
-    func formattedDateTimeSV() -> String {
+    private static let dateTimeFormatter: DateFormatter = {
         let f = DateFormatter()
         f.locale = Locale(identifier: "sv_SE")
         f.dateStyle = .short
         f.timeStyle = .short
-        return f.string(from: self)
+        return f
+    }()
+
+    func formattedTimeSV() -> String {
+        Date.timeFormatter.string(from: self)
+    }
+
+    func formattedDateTimeSV() -> String {
+        Date.dateTimeFormatter.string(from: self)
     }
 }
 

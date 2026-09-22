@@ -9,6 +9,7 @@ import Combine
 /// motparten schemalägger ALDRIG om en plan den själv redan schemalagt (ser sin egen origin).
 final class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var isSupported: Bool = WCSession.isSupported()
+    @Published var isActivated: Bool = false
     @Published var isReachable: Bool = false
     @Published var lastMessage: String?
 
@@ -90,29 +91,44 @@ final class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
     // MARK: - WCSessionDelegate
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         DispatchQueue.main.async {
-            self.isReachable = session.isReachable
+            self.refreshStatus()
             if let error { self.lastMessage = "WC activation error: \(error.localizedDescription)" }
         }
     }
 
     func sessionReachabilityDidChange(_ session: WCSession) {
-        DispatchQueue.main.async { self.isReachable = session.isReachable }
+        DispatchQueue.main.async { self.refreshStatus() }
+    }
+
+    /// Uppdaterar status från sessionen. Måste köras vid fler tillfällen än bara
+    /// aktivering — annars visar vyn "ej nåbar" trots fungerande synk.
+    func refreshStatus() {
+        guard let session else { return }
+        DispatchQueue.main.async {
+            self.isActivated = session.activationState == .activated
+            self.isReachable = session.isReachable
+        }
     }
 
     // applicationContext: levereras automatiskt när appen startar (och vid varje uppdatering).
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
-        DispatchQueue.main.async { self.handleIncoming(applicationContext) }
+        DispatchQueue.main.async {
+            self.refreshStatus()
+            self.handleIncoming(applicationContext)
+        }
     }
 
     // Direktmeddelanden när motparten är nåbar.
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         DispatchQueue.main.async {
+            self.refreshStatus()
             self.handleIncoming(message)
         }
     }
 
     func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
         DispatchQueue.main.async {
+            self.refreshStatus()
             if message["request"] as? String == "plan" {
                 if let plan = self.planProvider?(),
                    let data = try? JSONEncoder().encode(plan) {

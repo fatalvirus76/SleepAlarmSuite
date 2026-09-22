@@ -57,9 +57,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B7D61A5D2F0FA60A004E6D3A"
-            BuildableName = "SleepAlarmSuite Watch App.app"
-            BlueprintName = "SleepAlarmSuite Watch App"
+            BlueprintIdentifier = "B7E49B503052295500CE363B"
+            BuildableName = "Sleep Alarm Suite.app"
+            BlueprintName = "Sleep Alarm Suite"
             ReferencedContainer = "container:SleepAlarmSuite.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
