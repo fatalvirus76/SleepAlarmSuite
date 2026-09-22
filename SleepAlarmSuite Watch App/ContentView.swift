@@ -30,10 +30,10 @@ struct ContentView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 12) {
+            VStack(spacing: 10) {
                 heroCard
-                quickPills
                 actions
+                quickPills
                 planSummary
 
                 if let msg = wc.lastMessage {
@@ -61,39 +61,49 @@ struct ContentView: View {
 
     private var heroCard: some View {
         TimelineView(.periodic(from: .now, by: 15)) { context in
-            WatchCard(palette: p, padding: 12) {
-                VStack(spacing: 10) {
-                    WatchSectionTitle(
-                        title: activePlan == nil ? "Inget larm" : "Nästa väckning",
-                        systemImage: activePlan == nil ? "moon.zzz.fill" : "moon.stars.fill",
-                        palette: p
-                    )
-
+            WatchCard(palette: p, padding: 10) {
+                HStack(spacing: 10) {
                     ZStack {
                         ring(progress: ringProgress(at: context.date))
-                            .frame(width: 122, height: 122)
+                            .frame(width: 78, height: 78)
 
-                        VStack(spacing: 1) {
-                            Text(activePlan == nil ? "--:--" : activePlan!.lastFireDate.formattedTimeSV())
-                                .font(.system(size: 30, weight: .bold, design: .rounded))
-                                .foregroundStyle(p.accentGradient)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.6)
+                        Text(activePlan == nil ? "--:--" : activePlan!.lastFireDate.formattedTimeSV())
+                            .font(.system(size: 22, weight: .bold, design: .rounded))
+                            .foregroundStyle(p.accentGradient)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
+                            .padding(.horizontal, 8)
+                    }
 
-                            Text(heroSubline(at: context.date))
-                                .font(.system(size: 12, weight: .semibold))
+                    VStack(alignment: .leading, spacing: 3) {
+                        HStack(spacing: 5) {
+                            Image(systemName: activePlan == nil ? "moon.zzz.fill" : "moon.stars.fill")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundStyle(p.accent)
+                            Text(activePlan == nil ? "INGET LARM" : "VÄCKNING")
+                                .font(.system(size: 11, weight: .heavy))
+                                .tracking(0.5)
                                 .foregroundStyle(p.textSecondary)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.7)
                         }
-                        .padding(.horizontal, 16)
+
+                        Text(heroSubline(at: context.date))
+                            .font(.system(size: 15, weight: .bold, design: .rounded))
+                            .foregroundStyle(p.text)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.75)
+
+                        if let plan = activePlan, plan.smartWindowSeconds > 0 {
+                            Text("\(plan.firstFireDate.formattedTimeSV()) – \(plan.lastFireDate.formattedTimeSV())")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundStyle(p.accent)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.7)
+                        }
                     }
 
-                    if let plan = activePlan, plan.smartWindowSeconds > 0 {
-                        Text("\(plan.firstFireDate.formattedTimeSV()) – \(plan.lastFireDate.formattedTimeSV())")
-                            .font(.system(size: 13, weight: .bold, design: .rounded))
-                            .foregroundStyle(p.text)
-                    }
+                    Spacer(minLength: 0)
                 }
             }
         }

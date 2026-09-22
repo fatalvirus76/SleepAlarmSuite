@@ -13,11 +13,6 @@ struct SettingsView: View {
         scheduler.authorizationStatus == .authorized || scheduler.authorizationStatus == .provisional
     }
 
-    private let twoColumns = [
-        GridItem(.flexible(), spacing: 6),
-        GridItem(.flexible(), spacing: 6)
-    ]
-
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
@@ -69,9 +64,15 @@ struct SettingsView: View {
                     Spacer(minLength: 0)
                 }
 
-                LazyVGrid(columns: twoColumns, spacing: 6) {
+                VStack(spacing: 6) {
                     ForEach(WatchTheme.allCases) { item in
-                        WatchChip(title: item.title, selected: theme.theme == item, palette: p) {
+                        WatchChoiceRow(
+                            title: item.title,
+                            systemImage: item.icon,
+                            selected: theme.theme == item,
+                            palette: p,
+                            dots: [item.palette.accent, item.palette.accent2]
+                        ) {
                             withAnimation(.easeInOut(duration: 0.3)) { theme.theme = item }
                             WKInterfaceDevice.current().play(.click)
                         }

@@ -145,10 +145,10 @@ enum WatchTheme: String, CaseIterable, Identifiable {
                 accent2: Color(hexString: "5B49C0"),
                 onAccent: Color.white,
                 text: Color(hexString: "0B1220"),
-                textSecondary: Color(hexString: "44546C"),
-                cardFill: Color.white.opacity(0.55),
-                fieldFill: Color.white.opacity(0.72),
-                stroke: Color.white.opacity(0.85),
+                textSecondary: Color(hexString: "36465E"),
+                cardFill: Color.white.opacity(0.72),
+                fieldFill: Color.white.opacity(0.88),
+                stroke: Color(hexString: "0B1220").opacity(0.14),
                 isLight: true
             )
         }
@@ -353,8 +353,8 @@ struct WatchChip: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.system(size: 15, weight: .semibold))
-                .padding(.horizontal, 12)
+                .font(.system(size: 14, weight: .semibold))
+                .padding(.horizontal, 8)
                 .padding(.vertical, 8)
                 .frame(maxWidth: .infinity)
                 .background(
@@ -364,6 +364,65 @@ struct WatchChip: View {
                 .foregroundStyle(selected ? palette.onAccent : palette.text)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+/// Fullbredds-valrad (ikon + titel + bock) — används där chip-raden blir för trång,
+/// t.ex. startläge och teman. Stor träffyta och ingen avkortad text.
+struct WatchChoiceRow: View {
+    let title: String
+    let systemImage: String
+    let selected: Bool
+    let palette: WatchPalette
+    var dots: [Color]? = nil
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: systemImage)
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(selected ? palette.onAccent : palette.accent)
+                    .frame(width: 20, alignment: .center)
+
+                Text(title)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(selected ? palette.onAccent : palette.text)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+
+                if let dots {
+                    HStack(spacing: 3) {
+                        ForEach(Array(dots.enumerated()), id: \.offset) { _, color in
+                            Circle()
+                                .fill(color)
+                                .frame(width: 9, height: 9)
+                                .overlay(Circle().strokeBorder(Color.white.opacity(0.25), lineWidth: 0.5))
+                        }
+                    }
+                }
+
+                Spacer(minLength: 4)
+
+                if selected {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(palette.onAccent)
+                }
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 13, style: .continuous)
+                    .fill(selected ? AnyShapeStyle(palette.accentGradient) : AnyShapeStyle(palette.fieldFill))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 13, style: .continuous)
+                    .strokeBorder(selected ? Color.clear : palette.stroke, lineWidth: 1)
+            )
         }
         .buttonStyle(.plain)
     }
@@ -390,7 +449,7 @@ struct WatchActionButton: View {
                     .minimumScaleFactor(0.8)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 11)
+            .padding(.vertical, 10)
             .background(
                 RoundedRectangle(cornerRadius: 15, style: .continuous)
                     .fill(prominent ? AnyShapeStyle(palette.accentGradient) : AnyShapeStyle(palette.fieldFill))

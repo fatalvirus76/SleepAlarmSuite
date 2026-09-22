@@ -9,6 +9,16 @@ struct StatsView: View {
     private var stats: (count: Int, avgHours: Double, last7AvgHours: Double) { store.stats() }
     private var chartItems: [SleepSession] { Array(store.history.prefix(14)).reversed() }
 
+    /// X-domänen får luft i kanterna, annars klipps första/sista axel-etiketten.
+    private var chartDomain: ClosedRange<Date> {
+        let dates = chartItems.map { $0.startedAt }
+        guard let first = dates.min(), let last = dates.max() else {
+            let now = Date()
+            return now.addingTimeInterval(-86400)...now
+        }
+        return first.addingTimeInterval(-3600 * 8)...last.addingTimeInterval(3600 * 18)
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -83,8 +93,9 @@ struct StatsView: View {
                         .cornerRadius(5)
                     }
                     .chartYScale(domain: 0...(max(10, (chartItems.map { $0.plannedDurationSeconds / 3600.0 }.max() ?? 8) + 1)))
+                    .chartXScale(domain: chartDomain)
                     .chartXAxis {
-                        AxisMarks(values: .automatic(desiredCount: 4)) { _ in
+                        AxisMarks(values: .automatic(desiredCount: 3)) { _ in
                             AxisGridLine().foregroundStyle(p.stroke)
                             AxisTick().foregroundStyle(p.stroke)
                             AxisValueLabel(format: .dateTime.day().month(.abbreviated))

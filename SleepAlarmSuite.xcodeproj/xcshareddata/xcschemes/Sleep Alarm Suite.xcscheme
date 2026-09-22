@@ -63,6 +63,15 @@
             ReferencedContainer = "container:SleepAlarmSuite.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "B7E49B503052295500CE363B"
+            BuildableName = "Sleep Alarm Suite.app"
+            BlueprintName = "Sleep Alarm Suite"
+            ReferencedContainer = "container:SleepAlarmSuite.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

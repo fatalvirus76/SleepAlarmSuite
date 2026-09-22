@@ -11,13 +11,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		B7A100003052295500CE363B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B7D61A562F0FA609004E6D3A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B7D61A5D2F0FA60A004E6D3A;
-			remoteInfo = "SleepAlarmSuite Watch App";
-		};
 		B7D61A6C2F0FA60C004E6D3A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B7D61A562F0FA609004E6D3A /* Project object */;
@@ -32,21 +25,27 @@
 			remoteGlobalIDString = B7D61A5D2F0FA60A004E6D3A;
 			remoteInfo = "SleepAlarmSuite Watch App";
 		};
+		B7A100003052295500CE363B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7D61A562F0FA609004E6D3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B7D61A5D2F0FA60A004E6D3A;
+			remoteInfo = "SleepAlarmSuite Watch App";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		B7A100033052295500CE363B /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
+			dstSubfolder = Product;
 			files = (
 				B7A100023052295500CE363B /* SleepAlarmSuite Watch App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
+
 
 /* Begin PBXFileReference section */
 		B7D61A5E2F0FA60A004E6D3A /* SleepAlarmSuite Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SleepAlarmSuite Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -338,11 +337,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		B7A100013052295500CE363B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B7D61A5D2F0FA60A004E6D3A /* SleepAlarmSuite Watch App */;
-			targetProxy = B7A100003052295500CE363B /* PBXContainerItemProxy */;
-		};
 		B7D61A6D2F0FA60C004E6D3A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B7D61A5D2F0FA60A004E6D3A /* SleepAlarmSuite Watch App */;
@@ -352,6 +346,11 @@
 			isa = PBXTargetDependency;
 			target = B7D61A5D2F0FA60A004E6D3A /* SleepAlarmSuite Watch App */;
 			targetProxy = B7D61A762F0FA60C004E6D3A /* PBXContainerItemProxy */;
+		};
+		B7A100013052295500CE363B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B7D61A5D2F0FA60A004E6D3A /* SleepAlarmSuite Watch App */;
+			targetProxy = B7A100003052295500CE363B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -481,24 +480,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "SleepAlarmSuite Watch App/SleepAlarmSuite Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AZCLR78F5U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = SleepAlarmSuite;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.fatalv.Sleep-Alarm-Suite;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Läser sömndata för att upptäcka när du somnat.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Appen skriver inte till hälsodata.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.fatalv.Sleep-Alarm-Suite";
-				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fatalv.Sleep-Alarm-Suite.watchkitapp";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatalv.Sleep-Alarm-Suite.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -508,6 +507,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
+				CODE_SIGN_ENTITLEMENTS = "SleepAlarmSuite Watch App/SleepAlarmSuite Watch App.entitlements";
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 26.2;
 			};
@@ -518,24 +518,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "SleepAlarmSuite Watch App/SleepAlarmSuite Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AZCLR78F5U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = SleepAlarmSuite;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.fatalv.Sleep-Alarm-Suite;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Läser sömndata för att upptäcka när du somnat.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Appen skriver inte till hälsodata.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.fatalv.Sleep-Alarm-Suite";
-				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fatalv.Sleep-Alarm-Suite.watchkitapp";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fatalv.Sleep-Alarm-Suite.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -545,6 +545,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
+				CODE_SIGN_ENTITLEMENTS = "SleepAlarmSuite Watch App/SleepAlarmSuite Watch App.entitlements";
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
 				WATCHOS_DEPLOYMENT_TARGET = 26.2;
@@ -648,13 +649,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Sleep Alarm Suite/Sleep Alarm Suite.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AZCLR78F5U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				CODE_SIGN_ENTITLEMENTS = "Sleep Alarm Suite/Sleep Alarm Suite.entitlements";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Läser sömndata för att upptäcka när du somnat.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Appen skriver inte till hälsodata.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -667,7 +667,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fatalv.Sleep-Alarm-Suite";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -686,13 +686,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Sleep Alarm Suite/Sleep Alarm Suite.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AZCLR78F5U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				CODE_SIGN_ENTITLEMENTS = "Sleep Alarm Suite/Sleep Alarm Suite.entitlements";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Läser sömndata för att upptäcka när du somnat.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Appen skriver inte till hälsodata.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -705,7 +704,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fatalv.Sleep-Alarm-Suite";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

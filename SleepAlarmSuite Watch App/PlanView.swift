@@ -34,11 +34,11 @@ struct PlanView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
-                labelCard
                 startCard
                 durationCard
                 windowCard
                 snoozeCard
+                labelCard
 
                 Text("\(durationSeconds.asHoursMinutesSV()) sömn från \(startPreview())")
                     .font(.system(size: 12, weight: .semibold))
@@ -76,9 +76,14 @@ struct PlanView: View {
             VStack(alignment: .leading, spacing: 10) {
                 WatchSectionTitle(title: "Start", systemImage: "play.circle.fill", palette: p)
 
-                HStack(spacing: 6) {
+                VStack(spacing: 6) {
                     ForEach(StartModeOption.allCases) { mode in
-                        WatchChip(title: mode.short, selected: startMode == mode, palette: p) {
+                        WatchChoiceRow(
+                            title: mode.short,
+                            systemImage: mode.icon,
+                            selected: startMode == mode,
+                            palette: p
+                        ) {
                             withAnimation(.easeInOut(duration: 0.2)) { startModeRaw = mode.rawValue }
                         }
                     }
