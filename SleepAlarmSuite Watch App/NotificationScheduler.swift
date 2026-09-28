@@ -38,7 +38,7 @@ final class AlarmScheduler: ObservableObject {
 
         var fireDates: [Date] = []
         var t = start
-        while t <= end {
+        while t <= end && fireDates.count < 15 {   // watchOS: max ~64 väntande notiser — håll god marginal
             fireDates.append(t)
             t = t.addingTimeInterval(step)
         }

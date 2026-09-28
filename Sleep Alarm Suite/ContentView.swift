@@ -43,7 +43,12 @@ struct AlarmView: View {
     @AppStorage("snoozeMinutes") private var snoozeMinutes: Int = 9
     @AppStorage("label") private var label: String = "Sömn-larm"
 
-    @State private var startMode: StartMode = .now
+    // Sparas mellan appstarter (samma beteende som klockappen).
+    @AppStorage("startModeRaw") private var startModeRaw: String = StartMode.now.rawValue
+    private var startMode: StartMode {
+        get { StartMode(rawValue: startModeRaw) ?? .now }
+        nonmutating set { startModeRaw = newValue.rawValue }
+    }
     @State private var manualStart: Date = Date()
     @State private var isAutoDetecting: Bool = false
 

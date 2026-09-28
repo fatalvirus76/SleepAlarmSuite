@@ -74,6 +74,24 @@ final class HealthKitSleepManager: ObservableObject {
 
         self.lastDetectedSleepStart = detected
         self.lastError = errMsg
+        // Avvisa för gammal eller redan förbrukad insomning — annars återanvänder
+        // "Auto (HealthKit)" gårdagens/morgonens insovning och planen hamnar i det förflutna.
+        let maxAge: TimeInterval = 2 * 3600   // max 2h gammal insomning
+        guard let detected,
+              Date().timeIntervalSince(detected) <= maxAge,
+              detected > lastConsumedSleepStart else {
+            self.lastDetectedSleepStart = nil
+            return nil  // låt anroparen falla tillbaka på Date()
+        }
+        lastConsumedSleepStart = detected
+        self.lastDetectedSleepStart = detected
         return detected
     }
+
+    // Senast förbrukade insovning — stoppar återanvändning av samma detektion.
+    private var lastConsumedSleepStart: Date {
+        get { defaults.object(forKey: "lastConsumedSleepStart") as? Date ?? .distantPast }
+        set { defaults.set(newValue, forKey: "lastConsumedSleepStart") }
+    }
+    private let defaults = UserDefaults.standard
 }

@@ -23,10 +23,10 @@ final class AlarmStore: ObservableObject {
     func clearHistory() { history.removeAll() }
 
     /// Tillämpar plan som tagits emot från klockan (klockan schemalägger sina notiser,
-    /// vi schemalägger våra — båda avbryter sina egna via cancelLocalNotifications).
+    /// vi schemalägger våra — båda avbryter sina egna via clearPendingForPrefix i schedule()).
     func applyRemotePlan(_ plan: AlarmPlan, scheduler: AlarmScheduler) {
         currentPlan = plan
-        Task { await scheduler.cancelLocalNotifications() }
+        Task { await scheduler.schedule(plan: plan) }
     }
 
     /// Stopp-kommando från klockan: rensa lokalt + lokala notiser.

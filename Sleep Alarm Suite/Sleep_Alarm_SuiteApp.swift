@@ -17,6 +17,12 @@ struct Sleep_Alarm_SuiteApp: App {
                 .onAppear {
                     scheduler.refreshAuthStatus()
                     wc.refreshStatus()
+                    // Rensa passerade planer + deras notiser vid appstart.
+                    if let plan = store.currentPlan,
+                       plan.lastFireDate < Date().addingTimeInterval(-3600) {
+                        store.currentPlan = nil
+                        Task { await scheduler.cancelLocalNotifications() }
+                    }
                     wc.planProvider = { [weak store] in store?.currentPlan }
                     wc.onRemotePlan = { [weak store, weak scheduler] plan in
                         guard let store, let scheduler else { return }
