@@ -21,11 +21,16 @@ final class AlarmStore: ObservableObject {
 
     func clearHistory() { history.removeAll() }
 
-    /// Tillämpar plan som tagits emot från iPhone (iPhone har schemalagt sina notiser,
-    /// vi schemalägger våra egna — clearPendingForPrefix i schedule() stoppar krock).
+    /// Tillämpar plan som tagits emot från iPhone. Speglar tillståndet utan att schemalägga egna notiser:
+    /// den enhet som markerades som notifier (via start/snooze) äger larmet och ringar; mottagaren
+    /// avbryter bara eventuella egna väntande notiser för samma plan så inget dubbelt sparas.
     func applyRemotePlan(_ plan: AlarmPlan, scheduler: AlarmScheduler) {
         currentPlan = plan
-        Task { await scheduler.schedule(plan: plan) }
+        if plan.notifier == "watch" {
+            Task { await scheduler.schedule(plan: plan) }
+        } else {
+            Task { await scheduler.cancelLocalNotifications() }
+        }
     }
 
     /// Stopp-kommando från iPhone: rensa lokalt + lokala notiser.

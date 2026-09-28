@@ -250,7 +250,8 @@ struct AlarmView: View {
                 HStack(spacing: 10) {
                     SecondaryButton(title: "Snooze +\(plan.snoozeMinutes)", systemImage: "clock.arrow.circlepath", palette: p) {
                         Task {
-                            let snoozed = await scheduler.snooze(plan: plan)
+                            var snoozed = await scheduler.snooze(plan: plan)
+                            snoozed.notifier = "phone"
                             store.currentPlan = snoozed
                             await scheduler.schedule(plan: snoozed)
                             wc.sendPlan(snoozed)
@@ -529,7 +530,7 @@ struct AlarmView: View {
             start = detected ?? Date()
         }
 
-        let plan = AlarmPlan.make(
+        var plan = AlarmPlan.make(
             sleepStart: start,
             durationSeconds: durationSeconds,
             smartWindowSeconds: smartWindowMinutes * 60,
@@ -537,7 +538,7 @@ struct AlarmView: View {
             snoozeMinutes: snoozeMinutes,
             label: label.isEmpty ? "Sömn-larm" : label
         )
-
+        plan.notifier = "phone"
         store.currentPlan = plan
         store.addSession(SleepSession(
             id: UUID(),

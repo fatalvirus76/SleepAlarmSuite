@@ -273,7 +273,7 @@ struct ContentView: View {
             start = detected ?? Date()
         }
 
-        let plan = AlarmPlan.make(
+        var plan = AlarmPlan.make(
             sleepStart: start,
             durationSeconds: durationSeconds,
             smartWindowSeconds: smartWindowMinutes * 60,
@@ -281,7 +281,7 @@ struct ContentView: View {
             snoozeMinutes: snoozeMinutes,
             label: label.isEmpty ? "Sömn-larm" : label
         )
-
+        plan.notifier = "watch"
         store.currentPlan = plan
         store.addSession(SleepSession(
             id: UUID(),

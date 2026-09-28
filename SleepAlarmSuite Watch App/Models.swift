@@ -12,6 +12,7 @@ struct AlarmPlan: Codable, Identifiable, Equatable {
     var snoozeMinutes: Int
     var label: String
     var enabled: Bool
+    var notifier: String?
 
     static func make(
         sleepStart: Date,
@@ -35,7 +36,8 @@ struct AlarmPlan: Codable, Identifiable, Equatable {
             lastFireDate: last,
             snoozeMinutes: snoozeMinutes,
             label: label,
-            enabled: true
+            enabled: true,
+            notifier: nil
         )
     }
 }
