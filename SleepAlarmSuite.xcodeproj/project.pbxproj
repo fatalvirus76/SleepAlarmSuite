@@ -654,6 +654,7 @@
 				DEVELOPMENT_TEAM = AZCLR78F5U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Läser sömndata för att upptäcka när du somnat.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Appen skriver inte till hälsodata.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -675,7 +676,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -690,6 +691,7 @@
 				DEVELOPMENT_TEAM = AZCLR78F5U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Läser sömndata för att upptäcka när du somnat.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Appen skriver inte till hälsodata.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -711,7 +713,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
