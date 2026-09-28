@@ -263,6 +263,10 @@ struct ContentView: View {
             let hour = AppConfig.defaults.object(forKey: SettingsKeys.manualHour) as? Int ?? cal.component(.hour, from: now)
             let minute = AppConfig.defaults.object(forKey: SettingsKeys.manualMinute) as? Int ?? cal.component(.minute, from: now)
             start = cal.date(bySettingHour: hour, minute: minute, second: 0, of: now) ?? now
+            // Ett valt klockslag som redan passerat gäller nästa dygn.
+            if start < now {
+                start = cal.date(byAdding: .day, value: 1, to: start) ?? now
+            }
         case .autoHK:
             if !hk.authorized { await hk.requestAuthorization() }
             let detected = await hk.detectRecentSleepStart()

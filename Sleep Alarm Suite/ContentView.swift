@@ -519,6 +519,10 @@ struct AlarmView: View {
                 second: 0,
                 of: now
             ) ?? now
+            // Ett valt klockslag som redan passerat gäller nästa dygn.
+            if start < now {
+                start = cal.date(byAdding: .day, value: 1, to: start) ?? now
+            }
         case .autoHK:
             if !hk.authorized { await hk.requestAuthorization() }
             let detected = await hk.detectRecentSleepStart()
