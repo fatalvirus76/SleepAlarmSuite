@@ -10,6 +10,14 @@ final class PhoneConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
     @Published var isWatchAppInstalled: Bool = false
     @Published var isReachable: Bool = false
     @Published var lastMessage: String?
+    /// Senaste gången klockappen hörde av sig (mottaget meddelande/applicationContext
+    /// eller lyckad direktleverans). WCSession:s egna flaggor (isPaired/isWatchAppInstalled)
+    /// uppdateras BARA när sessionen aktiveras om — installerar man klockappen medan
+    /// telefonappen redan kör ligger de kvar på false trots att appen finns och synkar.
+    /// Kontaktbeviset är därför den pålitliga källan.
+    @Published private(set) var lastWatchContact: Date?
+
+    private let contactKey = "watch_last_contact_v1"
 
     var onRemotePlan: ((AlarmPlan) -> Void)?
     var onRemoteAction: ((String) -> Void)?
@@ -19,8 +27,20 @@ final class PhoneConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
 
     override init() {
         super.init()
+        lastWatchContact = UserDefaults.standard.object(forKey: contactKey) as? Date
         session?.delegate = self
         session?.activate()
+    }
+
+    /// Klockappen är installerad om WCSession säger det ELLER om klockan hörde av sig.
+    var watchAppConfirmedInstalled: Bool {
+        isWatchAppInstalled || lastWatchContact != nil
+    }
+
+    private func noteWatchContact() {
+        let now = Date()
+        lastWatchContact = now
+        UserDefaults.standard.set(now, forKey: contactKey)
     }
 
     static let keyPlanData = "planData"
@@ -37,6 +57,8 @@ final class PhoneConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
         ]
         try? session.updateApplicationContext(ctx)
         if session.isReachable {
+            // Brand-and-forget (watch-appens didReceiveMessage utan replyHandler svarar
+            // inte på vanliga planer — en replyHandler skulle ge falsk timeout).
             session.sendMessage(ctx, replyHandler: nil) { [weak self] _ in
                 DispatchQueue.main.async {
                     self?.lastMessage = "Kunde inte nå klockan direkt — planen synkas när appen öppnas."
@@ -63,6 +85,12 @@ final class PhoneConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
     // stabiliseras, och vid varm appstart kommer den kanske inte alls.
     func refreshStatus() {
         guard let session else { return }
+        // Är sessionen inte aktiv (t.ex. efter att klockappen installerats om, eller efter
+        // handledsbyte) ligger isPaired/isWatchAppInstalled kvar på gamla värden. Aktivera om
+        // så att flaggorna faktiskt uppdateras i stället för att ljuga i UI:t.
+        if session.activationState != .activated {
+            session.activate()
+        }
         DispatchQueue.main.async {
             self.isPaired = session.isPaired
             self.isWatchAppInstalled = session.isWatchAppInstalled
@@ -78,6 +106,7 @@ final class PhoneConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
         }
         session.sendMessage(["request": "plan"], replyHandler: { reply in
             DispatchQueue.main.async {
+                self.noteWatchContact()
                 if let data = reply[Self.keyPlanData] as? Data,
                    let plan = try? JSONDecoder().decode(AlarmPlan.self, from: data) {
                     self.onRemotePlan?(plan)
@@ -112,6 +141,7 @@ final class PhoneConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
 
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async {
+            self.noteWatchContact()
             self.refreshStatus()
             self.handleIncoming(applicationContext)
         }
@@ -119,6 +149,7 @@ final class PhoneConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
 
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         DispatchQueue.main.async {
+            self.noteWatchContact()
             self.refreshStatus()
             self.handleIncoming(message)
         }
@@ -126,6 +157,7 @@ final class PhoneConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
 
     func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
         DispatchQueue.main.async {
+            self.noteWatchContact()
             self.refreshStatus()
             if message["request"] as? String == "plan" {
                 if let plan = self.planProvider?(),

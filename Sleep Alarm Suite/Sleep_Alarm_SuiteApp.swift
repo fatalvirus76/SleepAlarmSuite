@@ -52,6 +52,9 @@ struct Sleep_Alarm_SuiteApp: App {
                 .onChange(of: scenePhase) { _, phase in
                     if phase == .active {
                         cleanupPassedPlan()
+                        // WCSession-flaggor (parad/installerad) uppdateras bara vid aktivering —
+                        // kolla om varje gång appen kommer i förgrunden.
+                        wc.refreshStatus()
                     }
                 }
         }

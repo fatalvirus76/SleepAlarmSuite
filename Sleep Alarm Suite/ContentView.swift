@@ -457,10 +457,22 @@ struct AlarmView: View {
                         statusIcon(wc.isPaired)
                     }
                     LabeledRow(title: "Klockapp installerad", systemImage: "square.and.arrow.down.on.square", palette: p) {
-                        statusIcon(wc.isWatchAppInstalled)
+                        // WCSession-flaggan är opålitlig: den uppdateras bara vid aktivering.
+                        // Har klockan hört av sig någon gång ÄR appen installerad.
+                        statusIcon(wc.watchAppConfirmedInstalled)
                     }
                     LabeledRow(title: "Nåbar nu", systemImage: "dot.radiowaves.left.and.right", palette: p) {
-                        statusIcon(wc.isReachable)
+                        // isReachable är bara sant medan klockappen är öppen i förgrunden —
+                        // en stängd app är inte ett fel, visa senaste kontakt i stället.
+                        if wc.isReachable {
+                            statusIcon(true)
+                        } else if let contact = wc.lastWatchContact {
+                            Text("i bakgrunden · \(contact.formattedTimeSV())")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundStyle(p.textSecondary)
+                        } else {
+                            statusIcon(false)
+                        }
                     }
                 }
 

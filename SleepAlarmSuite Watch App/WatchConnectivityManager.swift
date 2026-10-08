@@ -104,6 +104,11 @@ final class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
     /// aktivering — annars visar vyn "ej nåbar" trots fungerande synk.
     func refreshStatus() {
         guard let session else { return }
+        // Sessionen kan ha hamnat i inaktivt läge (t.ex. efter att iPhone-appen
+        // ominstallerats) — aktivera om så statusen inte fastnar på "Ej synkad".
+        if session.activationState != .activated {
+            session.activate()
+        }
         DispatchQueue.main.async {
             self.isActivated = session.activationState == .activated
             self.isReachable = session.isReachable
