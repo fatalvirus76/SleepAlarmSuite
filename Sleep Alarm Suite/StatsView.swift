@@ -92,7 +92,7 @@ struct StatsView: View {
                         .foregroundStyle(p.accentGradient)
                         .cornerRadius(5)
                     }
-                    .chartYScale(domain: 0...(max(10, (chartItems.map { $0.plannedDurationSeconds / 3600.0 }.max() ?? 8) + 1)))
+                    .chartYScale(domain: 0...10)
                     .chartXScale(domain: chartDomain)
                     .chartXAxis {
                         AxisMarks(values: .automatic(desiredCount: 3)) { _ in

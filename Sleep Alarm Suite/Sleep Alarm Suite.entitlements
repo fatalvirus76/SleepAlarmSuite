@@ -6,5 +6,11 @@
 	<true/>
 	<key>com.apple.developer.healthkit.background-delivery</key>
 	<true/>
+	<key>com.apple.developer.networking.slicing.appcategory</key>
+	<array/>
+	<key>com.apple.developer.networking.slicing.trafficcategory</key>
+	<array/>
+	<key>com.apple.developer.usernotifications.time-sensitive</key>
+	<true/>
 </dict>
 </plist>

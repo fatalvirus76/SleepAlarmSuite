@@ -7,6 +7,7 @@ struct ContentView: View {
     @EnvironmentObject private var scheduler: AlarmScheduler
     @EnvironmentObject private var hk: HealthKitSleepManager
     @EnvironmentObject private var wc: WatchConnectivityManager
+    @ObservedObject private var ringer = WatchAlarmRinger.shared
     @ObservedObject private var theme = WatchThemeManager.shared
 
     @AppStorage("useCustom", store: AppConfig.defaults) private var useCustom: Bool = false
@@ -22,6 +23,7 @@ struct ContentView: View {
     private var durationSeconds: TimeInterval { useCustom ? customHours * 3600 : preset.seconds }
     private var activePlan: AlarmPlan? {
         guard let plan = store.currentPlan, plan.enabled else { return nil }
+        guard plan.lastFireDate > Date() else { return nil }
         return plan
     }
     private var notificationsOn: Bool {
@@ -47,9 +49,14 @@ struct ContentView: View {
                 if let err = scheduler.lastError {
                     messageLine(err, color: p.dangerSafe)
                 }
+                if let err = ringer.lastError {
+                    messageLine(err, color: p.dangerSafe)
+                }
                 if let err = hk.lastError {
                     messageLine(err, color: p.warnSafe)
                 }
+                messageLine(ringer.isRinging ? "LARM RINGER" : ringer.statusText,
+                            color: ringer.isRinging ? p.dangerSafe : p.textSecondary)
             }
             .padding(.horizontal, 2)
             .padding(.bottom, 14)
@@ -155,6 +162,11 @@ struct ContentView: View {
                 systemImage: "applewatch",
                 color: wc.isReachable ? p.successSafe : p.textSecondary
             )
+            WatchPill(
+                text: ringer.hasScheduledAlarm ? "Klocklarm" : "Inget klocklarm",
+                systemImage: "alarm.fill",
+                color: ringer.hasScheduledAlarm ? p.successSafe : p.textSecondary
+            )
             Spacer(minLength: 0)
         }
     }
@@ -179,6 +191,7 @@ struct ContentView: View {
                         let snoozed = await scheduler.snooze(plan: plan)
                         store.currentPlan = snoozed
                         await scheduler.schedule(plan: snoozed)
+                        ringer.schedule(fireDate: snoozed.lastFireDate)
                         wc.sendPlan(snoozed)
                         WKInterfaceDevice.current().play(.directionDown)
                     }
@@ -187,6 +200,7 @@ struct ContentView: View {
                 HStack(spacing: 8) {
                     WatchActionButton(title: "Stoppa", systemImage: "stop.fill", palette: p, prominent: false, tint: p.dangerSafe) {
                         Task {
+                            ringer.cancel()
                             await scheduler.clearPendingForPrefix()
                             store.currentPlan = nil
                             wc.sendAction("stop")
@@ -194,13 +208,13 @@ struct ContentView: View {
                         }
                     }
 
-                    WatchActionButton(title: "Testa", systemImage: "waveform.path", palette: p, prominent: false) {
-                        WKInterfaceDevice.current().play(.notification)
+                    WatchActionButton(title: "Testa larm", systemImage: "alarm.fill", palette: p, prominent: false) {
+                        ringer.ringNow(seconds: 8, restoreFireDate: activePlan?.lastFireDate)
                     }
                 }
             } else {
-                WatchActionButton(title: "Testa haptik", systemImage: "waveform.path", palette: p, prominent: false) {
-                    WKInterfaceDevice.current().play(.notification)
+                WatchActionButton(title: "Testa larm", systemImage: "alarm.fill", palette: p, prominent: false) {
+                    ringer.ringNow(seconds: 8)
                 }
             }
         }
@@ -294,6 +308,9 @@ struct ContentView: View {
 
         WKInterfaceDevice.current().play(.success)
         await scheduler.schedule(plan: plan)
+        // Riktigt klocklarm: extended runtime-session som repeterar haptik + ljud
+        // (och visar systemets larm-alert när appen inte är aktiv).
+        ringer.schedule(fireDate: plan.lastFireDate)
 
         // Synka planen till iPhone (den schemalägger sina egna notiser).
         wc.sendPlan(plan)

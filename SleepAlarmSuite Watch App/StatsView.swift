@@ -71,7 +71,7 @@ struct StatsView: View {
                         .foregroundStyle(p.textSecondary)
                 } else {
                     GeometryReader { geo in
-                        let maxHours = max(10.0, chartItems.map { $0.plannedDurationSeconds / 3600.0 }.max() ?? 8)
+                        let maxHours = 10.0
                         let barWidth = max(6, (geo.size.width - CGFloat(chartItems.count - 1) * 4) / CGFloat(max(chartItems.count, 1)))
                         HStack(alignment: .bottom, spacing: 4) {
                             ForEach(chartItems) { item in

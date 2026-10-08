@@ -21,21 +21,25 @@ final class AlarmStore: ObservableObject {
 
     func clearHistory() { history.removeAll() }
 
-    /// Tillämpar plan som tagits emot från iPhone. Speglar tillståndet utan att schemalägga egna notiser:
-    /// den enhet som markerades som notifier (via start/snooze) äger larmet och ringar; mottagaren
-    /// avbryter bara eventuella egna väntande notiser för samma plan så inget dubbelt sparas.
+    /// Tillämpar plan som tagits emot från iPhone. Både telefon och klocka ska LÅTA:
+    /// varje enhet schemalägger därför sitt eget larm (klockan: extended runtime-session
+    /// + notiser, telefonen: AlarmKit + notiser). Stopp/snooze skickas alltid till
+    /// motparten så att den som stoppar tystar båda.
     func applyRemotePlan(_ plan: AlarmPlan, scheduler: AlarmScheduler) {
         currentPlan = plan
-        if plan.notifier == "watch" {
-            Task { await scheduler.schedule(plan: plan) }
-        } else {
+        guard plan.enabled, plan.lastFireDate > Date() else {
             Task { await scheduler.cancelLocalNotifications() }
+            WatchAlarmRinger.shared.cancel()
+            return
         }
+        Task { await scheduler.schedule(plan: plan) }
+        WatchAlarmRinger.shared.schedule(fireDate: plan.lastFireDate)
     }
 
-    /// Stopp-kommando från iPhone: rensa lokalt + lokala notiser.
+    /// Stopp-kommando från iPhone: rensa lokalt + lokala notiser + klocklarmet.
     func applyRemoteStop(scheduler: AlarmScheduler) {
         currentPlan = nil
+        WatchAlarmRinger.shared.cancel()
         Task { await scheduler.cancelLocalNotifications() }
     }
 

@@ -177,7 +177,7 @@ struct PlanView: View {
                         title: "Timmar",
                         valueText: String(format: "%.1f", customHours),
                         palette: p,
-                        onMinus: { customHours = max(4, customHours - 0.5) },
+                        onMinus: { customHours = max(1, customHours - 0.5) },
                         onPlus: { customHours = min(12, customHours + 0.5) }
                     )
                 }

@@ -32,6 +32,7 @@ struct AlarmView: View {
     @EnvironmentObject private var scheduler: AlarmScheduler
     @EnvironmentObject private var hk: HealthKitSleepManager
     @EnvironmentObject private var wc: PhoneConnectivityManager
+    @EnvironmentObject private var phoneAlarms: PhoneAlarmManager
     @ObservedObject private var theme = ThemeManager.shared
 
     @AppStorage("useCustom") private var useCustom: Bool = false
@@ -183,6 +184,9 @@ struct AlarmView: View {
 
     private var activePlan: AlarmPlan? {
         guard let plan = store.currentPlan, plan.enabled else { return nil }
+        // En plan vars väckningsfönster passerat räknas inte som aktiv längre,
+        // även om städningen (cleanupPassedPlan) inte hunnit köras än.
+        guard plan.lastFireDate > Date() else { return nil }
         return plan
     }
 
@@ -254,12 +258,14 @@ struct AlarmView: View {
                             snoozed.notifier = "phone"
                             store.currentPlan = snoozed
                             await scheduler.schedule(plan: snoozed)
+                            await phoneAlarms.schedule(for: snoozed)
                             wc.sendPlan(snoozed)
                         }
                     }
 
                     SecondaryButton(title: "Stoppa", systemImage: "stop.fill", palette: p, tint: p.danger) {
                         Task {
+                            phoneAlarms.cancel(for: plan.id)
                             await scheduler.clearPendingForPrefix()
                             store.currentPlan = nil
                             wc.sendAction("stop")
@@ -376,7 +382,7 @@ struct AlarmView: View {
                             title: "Timmar",
                             valueText: String(format: "%.1f h", customHours),
                             value: $customHours,
-                            range: 4...12,
+                            range: 1...12,
                             step: 0.5,
                             palette: p
                         )
@@ -550,6 +556,8 @@ struct AlarmView: View {
         ))
 
         await scheduler.schedule(plan: plan)
+        // Riktigt larm (AlarmKit) på måltiden — ringer tills du stoppar, även i tyst läge/Fokus.
+        await phoneAlarms.schedule(for: plan)
 
         // Synka planen till klockan (den schemalägger sina egna notiser).
         wc.sendPlan(plan)

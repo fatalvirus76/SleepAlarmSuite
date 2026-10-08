@@ -51,6 +51,9 @@ final class AlarmScheduler: ObservableObject {
                 ? "Väckningsfönster \(i+1)/\(fireDates.count). Öppna appen för snooze/stop."
                 : "Dags att vakna! Öppna appen för snooze/stop."
             content.sound = .default
+            // Bryter igenom Fokus/läggdags-läge.
+            content.interruptionLevel = .timeSensitive
+            content.relevanceScore = 1.0
 
             let comps = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second], from: date)
             let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)

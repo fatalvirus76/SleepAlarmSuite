@@ -22,20 +22,23 @@ final class AlarmStore: ObservableObject {
 
     func clearHistory() { history.removeAll() }
 
-    /// Tillämpar plan som tagits emot från klockan. Speglar tillståndet utan att schemalägga egna notiser:
-    /// den enhet som markerades som notifier (via start/snooze) äger larmet och ringar; mottagaren
-    /// avbryter bara eventuella egna väntande notiser för samma plan så inget dubbelt sparas.
-    func applyRemotePlan(_ plan: AlarmPlan, scheduler: AlarmScheduler) {
+    /// Tillämpar plan som tagits emot från klockan. Både telefon och klocka ska LÅTA:
+    /// telefonen schemalägger sitt eget AlarmKit-larm (+ notiser) även när planen
+    /// skapades på klockan, så larmet hörs även om telefonen ligger i ett annat rum.
+    func applyRemotePlan(_ plan: AlarmPlan, scheduler: AlarmScheduler, phoneAlarms: PhoneAlarmManager) {
         currentPlan = plan
-        if plan.notifier == "phone" {
-            Task { await scheduler.schedule(plan: plan) }
-        } else {
+        guard plan.enabled, plan.lastFireDate > Date() else {
+            phoneAlarms.cancel(for: plan.id)
             Task { await scheduler.cancelLocalNotifications() }
+            return
         }
+        Task { await scheduler.schedule(plan: plan) }
+        Task { await phoneAlarms.schedule(for: plan) }
     }
 
-    /// Stopp-kommando från klockan: rensa lokalt + lokala notiser.
-    func applyRemoteStop(scheduler: AlarmScheduler) {
+    /// Stopp-kommando från klockan: rensa lokalt + lokala notiser + AlarmKit-larmet.
+    func applyRemoteStop(scheduler: AlarmScheduler, phoneAlarms: PhoneAlarmManager) {
+        if let id = currentPlan?.id { phoneAlarms.cancel(for: id) }
         currentPlan = nil
         Task { await scheduler.cancelLocalNotifications() }
     }
