@@ -53,23 +53,23 @@ enum AppTheme: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .midnatt: return "Midnatt"
-        case .dracula: return "Dracula"
-        case .synthwave: return "Synthwave"
-        case .glas: return "Glas"
-        case .nord: return "Nord"
-        case .gryning: return "Gryning"
+        case .midnatt: return L("Midnatt")
+        case .dracula: return L("Dracula")
+        case .synthwave: return L("Synthwave")
+        case .glas: return L("Glas")
+        case .nord: return L("Nord")
+        case .gryning: return L("Gryning")
         }
     }
 
     var tagline: String {
         switch self {
-        case .midnatt: return "Mörk nattblå"
-        case .dracula: return "Lila & rosa"
-        case .synthwave: return "Neon 80-tal"
-        case .glas: return "Ljust & fruset"
-        case .nord: return "Sval skandinavisk"
-        case .gryning: return "Varm soluppgång"
+        case .midnatt: return L("Mörk nattblå")
+        case .dracula: return L("Lila & rosa")
+        case .synthwave: return L("Neon 80-tal")
+        case .glas: return L("Ljust & fruset")
+        case .nord: return L("Sval skandinavisk")
+        case .gryning: return L("Varm soluppgång")
         }
     }
 

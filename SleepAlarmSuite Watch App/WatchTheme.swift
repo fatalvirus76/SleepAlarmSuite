@@ -52,11 +52,11 @@ enum WatchTheme: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .midnatt: return "Midnatt"
-        case .dracula: return "Dracula"
-        case .synthwave: return "Synthwave"
-        case .gryning: return "Gryning"
-        case .glas: return "Glas"
+        case .midnatt: return L("Midnatt")
+        case .dracula: return L("Dracula")
+        case .synthwave: return L("Synthwave")
+        case .gryning: return L("Gryning")
+        case .glas: return L("Glas")
         }
     }
 

@@ -5,6 +5,7 @@ import WatchKit
 struct PlanView: View {
     @EnvironmentObject private var hk: HealthKitSleepManager
     @ObservedObject private var theme = WatchThemeManager.shared
+    @ObservedObject private var i18n = I18nManager.shared
 
     @AppStorage("useCustom", store: AppConfig.defaults) private var useCustom: Bool = false
     @AppStorage("presetRaw", store: AppConfig.defaults) private var presetRaw: String = Preset.h8.rawValue
@@ -12,7 +13,7 @@ struct PlanView: View {
     @AppStorage("smartWindowMinutes", store: AppConfig.defaults) private var smartWindowMinutes: Double = 20
     @AppStorage("windowStepMinutes", store: AppConfig.defaults) private var windowStepMinutes: Double = 5
     @AppStorage("snoozeMinutes", store: AppConfig.defaults) private var snoozeMinutes: Int = 9
-    @AppStorage("label", store: AppConfig.defaults) private var label: String = "Sömn-larm"
+    @AppStorage("label", store: AppConfig.defaults) private var label: String = L("Sömn-larm")
 
     @AppStorage(SettingsKeys.startMode, store: AppConfig.defaults) private var startModeRaw: String = StartModeOption.now.rawValue
     @AppStorage(SettingsKeys.manualHour, store: AppConfig.defaults) private var manualHour: Int = 22
@@ -40,7 +41,7 @@ struct PlanView: View {
                 snoozeCard
                 labelCard
 
-                Text("\(durationSeconds.asHoursMinutesSV()) sömn från \(startPreview())")
+                Text(L("%@ sömn från %@", durationSeconds.asHoursMinutesSV(), startPreview()))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(p.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -57,8 +58,8 @@ struct PlanView: View {
     private var labelCard: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 8) {
-                WatchSectionTitle(title: "Etikett", systemImage: "tag.fill", palette: p)
-                TextField("Sömn-larm", text: $label)
+                WatchSectionTitle(title: L("Etikett"), systemImage: "tag.fill", palette: p)
+                TextField(L("Sömn-larm"), text: $label)
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(p.text)
                     .padding(.horizontal, 10)
@@ -74,7 +75,7 @@ struct PlanView: View {
     private var startCard: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 10) {
-                WatchSectionTitle(title: "Start", systemImage: "play.circle.fill", palette: p)
+                WatchSectionTitle(title: L("Start"), systemImage: "play.circle.fill", palette: p)
 
                 VStack(spacing: 6) {
                     ForEach(StartModeOption.allCases) { mode in
@@ -91,14 +92,14 @@ struct PlanView: View {
 
                 switch startMode {
                 case .now:
-                    Text("Startar direkt när du trycker Starta.")
+                    Text(L("Startar direkt när du trycker Starta."))
                         .font(.system(size: 13))
                         .foregroundStyle(p.textSecondary)
 
                 case .manual:
                     VStack(spacing: 12) {
                         WatchStepperRow(
-                            title: "Timme",
+                            title: L("Timme"),
                             valueText: String(format: "%02d", manualHour),
                             palette: p,
                             onMinus: { manualHour = (manualHour + 23) % 24 },
@@ -106,14 +107,14 @@ struct PlanView: View {
                         )
 
                         WatchStepperRow(
-                            title: "Minut",
+                            title: L("Minut"),
                             valueText: String(format: "%02d", manualMinute),
                             palette: p,
                             onMinus: { manualMinute = (manualMinute + 55) % 60 },
                             onPlus: { manualMinute = (manualMinute + 5) % 60 }
                         )
 
-                        Text("Start kl. \(String(format: "%02d:%02d", manualHour, manualMinute))")
+                        Text(L("Start kl. %@", String(format: "%02d:%02d", manualHour, manualMinute)))
                             .font(.system(size: 13, weight: .semibold))
                             .foregroundStyle(p.accent)
                     }
@@ -121,13 +122,13 @@ struct PlanView: View {
                 case .autoHK:
                     VStack(alignment: .leading, spacing: 10) {
                         Text(hk.lastDetectedSleepStart == nil
-                             ? "Ingen insomning hittad än."
-                             : "Senaste insomning: \(hk.lastDetectedSleepStart!.formattedDateTimeSV())")
+                             ? L("Ingen insomning hittad än.")
+                             : L("Senaste insomning: %@", hk.lastDetectedSleepStart!.formattedDateTimeSV()))
                             .font(.system(size: 13))
                             .foregroundStyle(p.textSecondary)
 
                         WatchActionButton(
-                            title: isAutoDetecting ? "Söker…" : "Hämta från HealthKit",
+                            title: isAutoDetecting ? L("Söker…") : L("Hämta från HealthKit"),
                             systemImage: "wand.and.stars",
                             palette: p,
                             prominent: false
@@ -143,11 +144,11 @@ struct PlanView: View {
     private func startPreview() -> String {
         switch startMode {
         case .now:
-            return "nu"
+            return L("nu")
         case .manual:
-            return "kl. \(String(format: "%02d:%02d", manualHour, manualMinute))"
+            return L("kl. %@", String(format: "%02d:%02d", manualHour, manualMinute))
         case .autoHK:
-            return hk.lastDetectedSleepStart.map { "kl. \($0.formattedTimeSV())" } ?? "nu"
+            return hk.lastDetectedSleepStart.map { L("kl. %@", $0.formattedTimeSV()) } ?? L("nu")
         }
     }
 
@@ -156,7 +157,7 @@ struct PlanView: View {
     private var durationCard: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 10) {
-                WatchSectionTitle(title: "Sömnlängd", systemImage: "hourglass", palette: p)
+                WatchSectionTitle(title: L("Sömnlängd"), systemImage: "hourglass", palette: p)
 
                 LazyVGrid(columns: threeColumns, spacing: 6) {
                     ForEach(Preset.allCases) { item in
@@ -167,14 +168,14 @@ struct PlanView: View {
                             }
                         }
                     }
-                    WatchChip(title: "Egen", selected: useCustom, palette: p) {
+                    WatchChip(title: L("Egen"), selected: useCustom, palette: p) {
                         withAnimation(.easeInOut(duration: 0.2)) { useCustom = true }
                     }
                 }
 
                 if useCustom {
                     WatchStepperRow(
-                        title: "Timmar",
+                        title: L("Timmar"),
                         valueText: String(format: "%.1f", customHours),
                         palette: p,
                         onMinus: { customHours = max(1, customHours - 0.5) },
@@ -190,11 +191,11 @@ struct PlanView: View {
     private var windowCard: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 12) {
-                WatchSectionTitle(title: "Smart fönster", systemImage: "wind", palette: p)
+                WatchSectionTitle(title: L("Smart fönster"), systemImage: "wind", palette: p)
 
                 WatchStepperRow(
-                    title: "Fönster",
-                    valueText: smartWindowMinutes > 0 ? "\(Int(smartWindowMinutes)) min" : "Av",
+                    title: L("Fönster"),
+                    valueText: smartWindowMinutes > 0 ? L("%d min", Int(smartWindowMinutes)) : L("Av"),
                     palette: p,
                     onMinus: { smartWindowMinutes = max(0, smartWindowMinutes - 5) },
                     onPlus: { smartWindowMinutes = min(60, smartWindowMinutes + 5) }
@@ -202,14 +203,14 @@ struct PlanView: View {
 
                 if smartWindowMinutes > 0 {
                     WatchStepperRow(
-                        title: "Steg mellan larm",
-                        valueText: "\(Int(windowStepMinutes)) min",
+                        title: L("Steg mellan larm"),
+                        valueText: L("%d min", Int(windowStepMinutes)),
                         palette: p,
                         onMinus: { windowStepMinutes = max(1, windowStepMinutes - 1) },
                         onPlus: { windowStepMinutes = min(15, windowStepMinutes + 1) }
                     )
 
-                    Text("Väcker någonstans i fönstret före måltiden.")
+                    Text(L("Väcker någonstans i fönstret före måltiden."))
                         .font(.system(size: 12))
                         .foregroundStyle(p.textSecondary)
                 }
@@ -222,7 +223,7 @@ struct PlanView: View {
     private var snoozeCard: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 10) {
-                WatchSectionTitle(title: "Snooze (min)", systemImage: "clock.arrow.circlepath", palette: p)
+                WatchSectionTitle(title: L("Snooze (min)"), systemImage: "clock.arrow.circlepath", palette: p)
 
                 LazyVGrid(columns: threeColumns, spacing: 6) {
                     ForEach([3, 5, 7, 9, 10, 15], id: \.self) { value in

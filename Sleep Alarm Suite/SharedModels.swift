@@ -74,28 +74,53 @@ enum Preset: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .h6: return "6 timmar"
-        case .h7_5: return "7.5 timmar"
-        case .h8: return "8 timmar"
-        case .h9: return "9 timmar"
+        case .h6: return L("6 timmar")
+        case .h7_5: return L("7.5 timmar")
+        case .h8: return L("8 timmar")
+        case .h9: return L("9 timmar")
         }
     }
 }
 
 extension Date {
-    func formattedTimeSV() -> String {
+    // Formatterare cachas (statiska) — DateFormaters är dyra att skapa per anrop.
+    // En per språk, så språkbyte slår igenom direkt utan att bygga om.
+    private static let timeFmtSV: DateFormatter = {
         let f = DateFormatter()
         f.locale = Locale(identifier: "sv_SE")
         f.dateFormat = "HH:mm"
-        return f.string(from: self)
-    }
+        return f
+    }()
 
-    func formattedDateTimeSV() -> String {
+    private static let timeFmtEN: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateFormat = "HH:mm"
+        return f
+    }()
+
+    private static let dateTimeFmtSV: DateFormatter = {
         let f = DateFormatter()
         f.locale = Locale(identifier: "sv_SE")
         f.dateStyle = .short
         f.timeStyle = .short
-        return f.string(from: self)
+        return f
+    }()
+
+    private static let dateTimeFmtEN: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.dateStyle = .short
+        f.timeStyle = .short
+        return f
+    }()
+
+    func formattedTimeSV() -> String {
+        (I18nManager.isSwedish ? Date.timeFmtSV : Date.timeFmtEN).string(from: self)
+    }
+
+    func formattedDateTimeSV() -> String {
+        (I18nManager.isSwedish ? Date.dateTimeFmtSV : Date.dateTimeFmtEN).string(from: self)
     }
 }
 

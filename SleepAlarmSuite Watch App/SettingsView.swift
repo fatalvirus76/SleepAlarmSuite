@@ -7,6 +7,7 @@ struct SettingsView: View {
     @EnvironmentObject private var hk: HealthKitSleepManager
     @EnvironmentObject private var wc: WatchConnectivityManager
     @ObservedObject private var theme = WatchThemeManager.shared
+    @ObservedObject private var i18n = I18nManager.shared
 
     private var p: WatchPalette { theme.palette }
     private var notificationsOn: Bool {
@@ -17,6 +18,7 @@ struct SettingsView: View {
         ScrollView {
             VStack(spacing: 12) {
                 themeCard
+                languageCard
                 notificationsCard
                 healthCard
                 watchCard
@@ -33,7 +35,7 @@ struct SettingsView: View {
     private var themeCard: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 10) {
-                WatchSectionTitle(title: "Tema", systemImage: "paintpalette.fill", palette: p)
+                WatchSectionTitle(title: L("Tema"), systemImage: "paintpalette.fill", palette: p)
 
                 HStack(spacing: 10) {
                     ZStack {
@@ -57,7 +59,7 @@ struct SettingsView: View {
                         Text(theme.theme.title)
                             .font(.system(size: 17, weight: .bold))
                             .foregroundStyle(p.text)
-                        Text("Aktuellt tema")
+                        Text(L("Aktuellt tema"))
                             .font(.system(size: 12))
                             .foregroundStyle(p.textSecondary)
                     }
@@ -82,25 +84,53 @@ struct SettingsView: View {
         }
     }
 
+    // MARK: Språk
+
+    private var languageCard: some View {
+        WatchCard(palette: p, padding: 12) {
+            VStack(alignment: .leading, spacing: 10) {
+                WatchSectionTitle(title: L("Språk"), systemImage: "globe", palette: p)
+
+                VStack(spacing: 6) {
+                    ForEach(AppLanguage.allCases) { lang in
+                        WatchChoiceRow(
+                            title: lang.displayName,
+                            systemImage: "globe",
+                            selected: i18n.language == lang,
+                            palette: p
+                        ) {
+                            withAnimation(.easeInOut(duration: 0.3)) { i18n.setLanguage(lang) }
+                            WKInterfaceDevice.current().play(.click)
+                        }
+                    }
+                }
+
+                Text(L("Språket gäller hela appen och sparas direkt."))
+                    .font(.system(size: 12))
+                    .foregroundStyle(p.textSecondary)
+            }
+        }
+    }
+
     // MARK: Notiser
 
     private var notificationsCard: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(spacing: 6) {
-                    WatchSectionTitle(title: "Notiser", systemImage: "bell.fill", palette: p)
+                    WatchSectionTitle(title: L("Notiser"), systemImage: "bell.fill", palette: p)
                     WatchPill(
-                        text: notificationsOn ? "På" : "Av",
+                        text: notificationsOn ? L("På") : L("Av"),
                         systemImage: notificationsOn ? "checkmark" : "xmark",
                         color: notificationsOn ? p.successSafe : p.dangerSafe
                     )
                 }
 
-                Text("Behövs för att väcka med haptik och notis.")
+                Text(L("Behövs för att väcka med haptik och notis."))
                     .font(.system(size: 12))
                     .foregroundStyle(p.textSecondary)
 
-                WatchActionButton(title: "Begär tillstånd", systemImage: "bell.badge.fill", palette: p, prominent: !notificationsOn) {
+                WatchActionButton(title: L("Begär tillstånd"), systemImage: "bell.badge.fill", palette: p, prominent: !notificationsOn) {
                     Task { await scheduler.requestAuthorization() }
                 }
             }
@@ -113,25 +143,25 @@ struct SettingsView: View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(spacing: 6) {
-                    WatchSectionTitle(title: "HealthKit", systemImage: "heart.fill", palette: p)
+                    WatchSectionTitle(title: L("HealthKit"), systemImage: "heart.fill", palette: p)
                     WatchPill(
-                        text: hk.authorized ? "Kopplad" : "Ej kopplad",
+                        text: hk.authorized ? L("Kopplad") : L("Ej kopplad"),
                         systemImage: hk.authorized ? "checkmark" : "xmark",
                         color: hk.authorized ? p.successSafe : p.textSecondary
                     )
                 }
 
-                Text("Används för att hitta senaste insomningstid (Auto-läget).")
+                Text(L("Används för att hitta senaste insomningstid (Auto-läget)."))
                     .font(.system(size: 12))
                     .foregroundStyle(p.textSecondary)
 
                 if let d = hk.lastDetectedSleepStart {
-                    Text("Senast upptäckt: \(d.formattedDateTimeSV())")
+                    Text(L("Senast upptäckt: %@", d.formattedDateTimeSV()))
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundStyle(p.accent)
                 }
 
-                WatchActionButton(title: "Aktivera HealthKit", systemImage: "heart.text.square.fill", palette: p, prominent: !hk.authorized) {
+                WatchActionButton(title: L("Aktivera HealthKit"), systemImage: "heart.text.square.fill", palette: p, prominent: !hk.authorized) {
                     Task { await hk.requestAuthorization() }
                 }
             }
@@ -143,12 +173,12 @@ struct SettingsView: View {
     private var watchCard: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 10) {
-                WatchSectionTitle(title: "Synk med iPhone", systemImage: "applewatch", palette: p)
+                WatchSectionTitle(title: L("Synk med iPhone"), systemImage: "applewatch", palette: p)
 
-                statusRow("Session aktiv", ok: wc.isActivated)
-                statusRow("iPhone nåbar", ok: wc.isReachable)
+                statusRow(L("Session aktiv"), ok: wc.isActivated)
+                statusRow(L("iPhone nåbar"), ok: wc.isReachable)
 
-                WatchActionButton(title: "Hämta plan från iPhone", systemImage: "arrow.down.circle.fill", palette: p, prominent: false) {
+                WatchActionButton(title: L("Hämta plan från iPhone"), systemImage: "arrow.down.circle.fill", palette: p, prominent: false) {
                     wc.requestPlanFromPhone()
                 }
 
@@ -178,7 +208,7 @@ struct SettingsView: View {
     private var aboutCard: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 8) {
-                WatchSectionTitle(title: "Om", systemImage: "info.circle.fill", palette: p)
+                WatchSectionTitle(title: L("Om"), systemImage: "info.circle.fill", palette: p)
 
                 HStack(alignment: .firstTextBaseline) {
                     Text("Sleep Alarm Suite")
@@ -190,7 +220,7 @@ struct SettingsView: View {
                         .foregroundStyle(p.accent)
                 }
 
-                Text("Väcker dig i ett smart fönster efter din planerade sömn.")
+                Text(L("Väcker dig i ett smart fönster efter din planerade sömn."))
                     .font(.system(size: 12))
                     .foregroundStyle(p.textSecondary)
             }

@@ -47,7 +47,7 @@ final class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
         if session.isReachable {
             session.sendMessage(ctx, replyHandler: nil) { [weak self] _ in
                 DispatchQueue.main.async {
-                    self?.lastMessage = "Kunde inte nå iPhone direkt — planen synkas när appen öppnas."
+                    self?.lastMessage = L("Kunde inte nå iPhone direkt — planen synkas när appen öppnas.")
                 }
             }
         }
@@ -70,7 +70,7 @@ final class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
     func requestPlanFromPhone() {
         guard let session, session.activationState == .activated else { return }
         guard session.isReachable else {
-            DispatchQueue.main.async { self.lastMessage = "iPhone ej nåbar" }
+            DispatchQueue.main.async { self.lastMessage = L("iPhone ej nåbar") }
             return
         }
         session.sendMessage(["request": "plan"], replyHandler: { reply in
@@ -78,9 +78,9 @@ final class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
                 if let data = reply[Self.keyPlanData] as? Data,
                    let plan = try? JSONDecoder().decode(AlarmPlan.self, from: data) {
                     self.onRemotePlan?(plan)
-                    self.lastMessage = "Hämtade plan från iPhone."
+                    self.lastMessage = L("Hämtade plan från iPhone.")
                 } else {
-                    self.lastMessage = "Ingen plan på iPhone."
+                    self.lastMessage = L("Ingen plan på iPhone.")
                 }
             }
         }, errorHandler: { [weak self] error in
@@ -155,10 +155,10 @@ final class WatchConnectivityManager: NSObject, ObservableObject, WCSessionDeleg
         if let data = message[Self.keyPlanData] as? Data,
            let plan = try? JSONDecoder().decode(AlarmPlan.self, from: data) {
             onRemotePlan?(plan)
-            lastMessage = "Plan mottagen från iPhone."
+            lastMessage = L("Plan mottagen från iPhone.")
         } else if let action = message[Self.keyAction] as? String {
             onRemoteAction?(action)
-            lastMessage = "Åtgärd från iPhone: \(action)"
+            lastMessage = L("Åtgärd från iPhone: %@", action)
         }
     }
 }

@@ -19,12 +19,12 @@ final class PhoneAlarmManager: ObservableObject {
     /// UUID:t som AlarmKit-larmet schemaläggs under — alltid planens eget id.
     func schedule(for plan: AlarmPlan) async {
         guard plan.enabled else {
-            lastError = "Planen är avstängd — inget AlarmKit-larm schemalagt."
+            lastError = L("Planen är avstängd — inget AlarmKit-larm schemalagt.")
             return
         }
         let fireDate = plan.lastFireDate
         guard fireDate > Date() else {
-            lastError = "Tiden \(fireDate.formattedTimeSV()) har passerat — inget AlarmKit-larm schemalagt."
+            lastError = L("Tiden %@ har passerat — inget AlarmKit-larm schemalagt.", fireDate.formattedTimeSV())
             return
         }
 
@@ -34,7 +34,7 @@ final class PhoneAlarmManager: ObservableObject {
             }
             authorizationState = AlarmManager.shared.authorizationState
             guard authorizationState == .authorized else {
-                lastError = "AlarmKit ej auktoriserat — vanliga notiser används som reserv."
+                lastError = L("AlarmKit ej auktoriserat — vanliga notiser används som reserv.")
                 return
             }
 

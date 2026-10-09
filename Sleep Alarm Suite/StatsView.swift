@@ -4,6 +4,7 @@ import Charts
 struct StatsView: View {
     @EnvironmentObject private var store: AlarmStore
     @ObservedObject private var theme = ThemeManager.shared
+    @ObservedObject private var i18n = I18nManager.shared
 
     private var p: ThemePalette { theme.palette }
     private var stats: (count: Int, avgHours: Double, last7AvgHours: Double) { store.stats() }
@@ -31,7 +32,7 @@ struct StatsView: View {
                 .padding(.bottom, 32)
             }
             .background(AuroraBackground(palette: p))
-            .navigationTitle("Statistik")
+            .navigationTitle(L("Statistik"))
             .navigationBarTitleDisplayMode(.inline)
         }
     }
@@ -40,9 +41,9 @@ struct StatsView: View {
 
     private var tiles: some View {
         HStack(spacing: 12) {
-            tile(value: "\(stats.count)", unit: "pass", title: "Loggade", icon: "moon.zzz.fill")
-            tile(value: String(format: "%.1f", stats.last7AvgHours), unit: "h", title: "Snitt 7", icon: "chart.line.uptrend.xyaxis")
-            tile(value: String(format: "%.1f", stats.avgHours), unit: "h", title: "Snitt allt", icon: "chart.bar.fill")
+            tile(value: "\(stats.count)", unit: L("pass"), title: L("Loggade"), icon: "moon.zzz.fill")
+            tile(value: String(format: "%.1f", stats.last7AvgHours), unit: "h", title: L("Snitt 7"), icon: "chart.line.uptrend.xyaxis")
+            tile(value: String(format: "%.1f", stats.avgHours), unit: "h", title: L("Snitt allt"), icon: "chart.bar.fill")
         }
     }
 
@@ -79,15 +80,15 @@ struct StatsView: View {
     private var chartCard: some View {
         ThemedCard(palette: p) {
             VStack(alignment: .leading, spacing: 16) {
-                CardHeader(title: "Planerad sömnlängd", systemImage: "chart.bar.xaxis", palette: p)
+                CardHeader(title: L("Planerad sömnlängd"), systemImage: "chart.bar.xaxis", palette: p)
 
                 if chartItems.isEmpty {
-                    emptyHint("Ingen historik än — starta ett larm först.")
+                    emptyHint(L("Ingen historik än — starta ett larm först."))
                 } else {
                     Chart(chartItems) { item in
                         BarMark(
-                            x: .value("Datum", item.startedAt),
-                            y: .value("Timmar", item.plannedDurationSeconds / 3600.0)
+                            x: .value(L("Datum"), item.startedAt),
+                            y: .value(L("Timmar"), item.plannedDurationSeconds / 3600.0)
                         )
                         .foregroundStyle(p.accentGradient)
                         .cornerRadius(5)
@@ -120,12 +121,12 @@ struct StatsView: View {
         ThemedCard(palette: p) {
             VStack(alignment: .leading, spacing: 14) {
                 HStack(spacing: 10) {
-                    CardHeader(title: "Historik", systemImage: "list.bullet.rectangle", palette: p)
+                    CardHeader(title: L("Historik"), systemImage: "list.bullet.rectangle", palette: p)
                     if !store.history.isEmpty {
                         Button {
                             withAnimation(.easeInOut(duration: 0.25)) { store.clearHistory() }
                         } label: {
-                            Text("Rensa")
+                            Text(L("Rensa"))
                                 .font(.system(size: 12, weight: .bold))
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 6)
@@ -137,7 +138,7 @@ struct StatsView: View {
                 }
 
                 if store.history.isEmpty {
-                    emptyHint("Ingen historik än.")
+                    emptyHint(L("Ingen historik än."))
                 } else {
                     VStack(spacing: 10) {
                         ForEach(store.history.prefix(20)) { item in
@@ -176,7 +177,7 @@ struct StatsView: View {
                 Text(item.plannedWakeTarget.formattedTimeSV())
                     .font(.system(size: 16, weight: .bold, design: .rounded))
                     .foregroundStyle(p.accent)
-                Text("väckning")
+                Text(L("väckning"))
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundStyle(p.textSecondary)
             }

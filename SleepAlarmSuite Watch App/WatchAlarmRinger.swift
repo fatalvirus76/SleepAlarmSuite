@@ -25,7 +25,7 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
 
     @Published private(set) var isRinging = false
     @Published private(set) var lastError: String?
-    @Published private(set) var statusText: String = "Inget larm schemalagt"
+    @Published private(set) var statusText: String = L("Inget larm schemalagt")
 
     private var session: WKExtendedRuntimeSession?
     private var scheduledFireDate: Date?
@@ -54,17 +54,17 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
         wantedFireDate = fireDate
         ringEnabled = true
         guard fireDate > Date() else {
-            lastError = "Tiden har redan passerat — inget klocklarm schemalagt."
-            statusText = "Inget larm schemalagt"
+            lastError = L("Tiden har redan passerat — inget klocklarm schemalagt.")
+            statusText = L("Inget larm schemalagt")
             return
         }
         // watchOS: start(at:) får bara anropas i aktivt läge. Annars väntar vi.
         guard WKApplication.shared().applicationState == .active else {
-            statusText = "Schemaläggs när appen är aktiv"
+            statusText = L("Schemaläggs när appen är aktiv")
             return
         }
         guard fireDate.timeIntervalSinceNow <= Self.maxScheduleAhead else {
-            statusText = "Schemaläggs när det är mindre än 36 h kvar"
+            statusText = L("Schemaläggs när det är mindre än 36 h kvar")
             return
         }
         invalidateSession()
@@ -74,7 +74,7 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
         session = s
         scheduledFireDate = fireDate
         s.start(at: fireDate)
-        statusText = "Klocklarm \(fireDate.formattedTimeSV())"
+        statusText = L("Klocklarm %@", fireDate.formattedTimeSV())
         lastError = nil
     }
 
@@ -100,14 +100,14 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
         stopRinging()
         invalidateSession()
         scheduledFireDate = nil
-        statusText = "Inget larm schemalagt"
+        statusText = L("Inget larm schemalagt")
     }
 
     /// Testar hela larmkedjan direkt (samma session + haptik + ljud som det riktiga larmet).
     func ringNow(seconds: Double = 8, restoreFireDate: Date? = nil) {
         cancel()
         guard WKApplication.shared().applicationState == .active else {
-            lastError = "Öppna appen för att testa larmet."
+            lastError = L("Öppna appen för att testa larmet.")
             return
         }
         let s = WKExtendedRuntimeSession()
@@ -117,7 +117,7 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
         ringEnabled = true
         // Måste vara en schemalagd (start(at:)) session — notifyUser ignoreras annars.
         s.start(at: Date().addingTimeInterval(2))
-        statusText = "Testar larmet …"
+        statusText = L("Testar larmet …")
         testStopTask = Task { [weak self] in
             try? await Task.sleep(for: .seconds(seconds + 3))
             guard let self, !Task.isCancelled else { return }
@@ -130,7 +130,7 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
             } else {
                 self.wantedFireDate = nil
                 self.ringEnabled = false
-                self.statusText = "Testet klart"
+                self.statusText = L("Testet klart")
             }
         }
     }
@@ -188,7 +188,7 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
             player.play()
             audio = player
         } catch {
-            lastError = "Ljudet kunde inte startas: \(error.localizedDescription)"
+            lastError = L("Ljudet kunde inte startas: %@", error.localizedDescription)
         }
     }
 

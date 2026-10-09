@@ -9,15 +9,15 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $lastTab) {
             AlarmView()
-                .tabItem { Label("Larm", systemImage: "alarm.fill") }
+                .tabItem { Label(L("Larm"), systemImage: "alarm.fill") }
                 .tag(0)
 
             StatsView()
-                .tabItem { Label("Statistik", systemImage: "chart.bar.xaxis") }
+                .tabItem { Label(L("Statistik"), systemImage: "chart.bar.xaxis") }
                 .tag(1)
 
             ThemeView()
-                .tabItem { Label("Tema", systemImage: "paintpalette.fill") }
+                .tabItem { Label(L("Tema"), systemImage: "paintpalette.fill") }
                 .tag(2)
         }
         .tint(theme.palette.accent)
@@ -34,6 +34,7 @@ struct AlarmView: View {
     @EnvironmentObject private var wc: PhoneConnectivityManager
     @EnvironmentObject private var phoneAlarms: PhoneAlarmManager
     @ObservedObject private var theme = ThemeManager.shared
+    @ObservedObject private var i18n = I18nManager.shared
 
     @AppStorage("useCustom") private var useCustom: Bool = false
     @AppStorage("presetRaw") private var presetRaw: String = Preset.h8.rawValue
@@ -42,7 +43,7 @@ struct AlarmView: View {
     @AppStorage("smartWindowMinutes") private var smartWindowMinutes: Double = 20
     @AppStorage("windowStepMinutes") private var windowStepMinutes: Double = 5
     @AppStorage("snoozeMinutes") private var snoozeMinutes: Int = 9
-    @AppStorage("label") private var label: String = "Sömn-larm"
+    @AppStorage("label") private var label: String = L("Sömn-larm")
 
     // Sparas mellan appstarter (samma beteende som klockappen).
     @AppStorage("startModeRaw") private var startModeRaw: String = StartMode.now.rawValue
@@ -54,11 +55,19 @@ struct AlarmView: View {
     @State private var isAutoDetecting: Bool = false
 
     enum StartMode: String, CaseIterable, Identifiable {
-        case now = "Nu"
-        case manual = "Manuellt"
-        case autoHK = "Auto (Health)"
+        case now = "now"
+        case manual = "manual"
+        case autoHK = "autoHK"
 
         var id: String { rawValue }
+
+        var title: String {
+            switch self {
+            case .now: return L("Nu")
+            case .manual: return L("Manuellt")
+            case .autoHK: return L("Auto (Health)")
+            }
+        }
 
         var icon: String {
             switch self {
@@ -123,13 +132,13 @@ struct AlarmView: View {
                         Image(systemName: activePlan == nil ? "moon.zzz.fill" : "moon.stars.fill")
                             .font(.system(size: 13, weight: .bold))
                             .foregroundStyle(p.accent)
-                        Text(activePlan == nil ? "INGET AKTIVT LARM" : "NÄSTA VÄCKNING")
+                        Text(activePlan == nil ? L("INGET AKTIVT LARM") : L("NÄSTA VÄCKNING"))
                             .font(.system(size: 12, weight: .heavy))
                             .tracking(1.2)
                             .foregroundStyle(p.textSecondary)
                         Spacer(minLength: 0)
                         StatusPill(
-                            text: notificationsOn ? "Notiser på" : "Notiser av",
+                            text: notificationsOn ? L("Notiser på") : L("Notiser av"),
                             systemImage: notificationsOn ? "bell.fill" : "bell.slash.fill",
                             color: notificationsOn ? p.success : p.danger
                         )
@@ -161,12 +170,12 @@ struct AlarmView: View {
 
                     HStack(spacing: 8) {
                         StatusPill(
-                            text: targetLabel(activePlan) + " mål",
+                            text: targetLabel(activePlan) + " " + L("mål"),
                             systemImage: "hourglass",
                             color: p.accent
                         )
                         StatusPill(
-                            text: wc.isPaired ? (wc.isReachable ? "Klocka nära" : "Klocka parad") : "Ingen klocka",
+                            text: wc.isPaired ? (wc.isReachable ? L("Klocka nära") : L("Klocka parad")) : L("Ingen klocka"),
                             systemImage: "applewatch",
                             color: wc.isPaired ? p.success : p.textSecondary
                         )
@@ -197,10 +206,10 @@ struct AlarmView: View {
     }
 
     private func heroSubline(at date: Date) -> String {
-        guard let plan = activePlan else { return "Ingen plan ännu — tryck Starta nedan" }
+        guard let plan = activePlan else { return L("Ingen plan ännu — tryck Starta nedan") }
         let left = plan.lastFireDate.timeIntervalSince(date)
-        if left <= 0 { return "Väckning passerad" }
-        return "\(TimeInterval(left).asHoursMinutesSV()) kvar"
+        if left <= 0 { return L("Väckning passerad") }
+        return L("%@ kvar", TimeInterval(left).asHoursMinutesSV())
     }
 
     private func windowBar(plan: AlarmPlan, now: Date) -> some View {
@@ -213,7 +222,7 @@ struct AlarmView: View {
                     .font(.system(size: 13, weight: .bold, design: .rounded))
                     .foregroundStyle(p.text)
                 Spacer(minLength: 6)
-                Text("Smart fönster \(Int(plan.smartWindowSeconds / 60)) min • steg \(Int(plan.windowStepSeconds / 60)) min")
+                Text(L("Smart fönster %d min • steg %d min", Int(plan.smartWindowSeconds / 60), Int(plan.windowStepSeconds / 60)))
                     .font(.system(size: 11, weight: .medium))
                     .foregroundStyle(p.textSecondary)
                     .lineLimit(1)
@@ -241,18 +250,18 @@ struct AlarmView: View {
     private var actionButtons: some View {
         VStack(spacing: 10) {
             if scheduler.authorizationStatus == .notDetermined {
-                SecondaryButton(title: "Aktivera notiser", systemImage: "bell.badge.fill", palette: p) {
+                SecondaryButton(title: L("Aktivera notiser"), systemImage: "bell.badge.fill", palette: p) {
                     Task { await scheduler.requestAuthorization() }
                 }
             }
 
-            PrimaryButton(title: "Starta sömn-larm", systemImage: "bed.double.fill", palette: p) {
+            PrimaryButton(title: L("Starta sömn-larm"), systemImage: "bed.double.fill", palette: p) {
                 Task { await startSleep() }
             }
 
             if let plan = activePlan {
                 HStack(spacing: 10) {
-                    SecondaryButton(title: "Snooze +\(plan.snoozeMinutes)", systemImage: "clock.arrow.circlepath", palette: p) {
+                    SecondaryButton(title: L("Snooze") + " +\(plan.snoozeMinutes)", systemImage: "clock.arrow.circlepath", palette: p) {
                         Task {
                             var snoozed = await scheduler.snooze(plan: plan)
                             snoozed.notifier = "phone"
@@ -263,7 +272,7 @@ struct AlarmView: View {
                         }
                     }
 
-                    SecondaryButton(title: "Stoppa", systemImage: "stop.fill", palette: p, tint: p.danger) {
+                    SecondaryButton(title: L("Stoppa"), systemImage: "stop.fill", palette: p, tint: p.danger) {
                         Task {
                             phoneAlarms.cancel(for: plan.id)
                             await scheduler.clearPendingForPrefix()
@@ -281,18 +290,18 @@ struct AlarmView: View {
     private var plannerCard: some View {
         ThemedCard(palette: p) {
             VStack(alignment: .leading, spacing: 18) {
-                CardHeader(title: "Planera", systemImage: "slider.horizontal.3", palette: p)
+                CardHeader(title: L("Planera"), systemImage: "slider.horizontal.3", palette: p)
 
                 // Start-läge
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("START")
+                    Text(L("START"))
                         .font(.system(size: 11, weight: .heavy))
                         .tracking(1)
                         .foregroundStyle(p.textSecondary)
 
                     HStack(spacing: 8) {
                         ForEach(StartMode.allCases) { mode in
-                            ThemeChip(title: mode.rawValue, selected: startMode == mode, palette: p) {
+                            ThemeChip(title: mode.title, selected: startMode == mode, palette: p) {
                                 withAnimation(.easeInOut(duration: 0.2)) { startMode = mode }
                             }
                         }
@@ -300,13 +309,13 @@ struct AlarmView: View {
 
                     switch startMode {
                     case .now:
-                        LabeledRow(title: "Startar", systemImage: "bolt.fill", palette: p) {
+                        LabeledRow(title: L("Startar"), systemImage: "bolt.fill", palette: p) {
                             Text(Date().formattedTimeSV())
                                 .font(.system(size: 16, weight: .bold, design: .rounded))
                                 .foregroundStyle(p.accent)
                         }
                     case .manual:
-                        LabeledRow(title: "Starttid", systemImage: "clock.fill", palette: p) {
+                        LabeledRow(title: L("Starttid"), systemImage: "clock.fill", palette: p) {
                             DatePicker("", selection: $manualStart, displayedComponents: [.hourAndMinute])
                                 .labelsHidden()
                                 .tint(p.accent)
@@ -318,7 +327,7 @@ struct AlarmView: View {
                                 .foregroundStyle(p.accent)
                                 .frame(width: 22)
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(hk.lastDetectedSleepStart == nil ? "Ingen detektion än" : "Senaste insomning")
+                                Text(hk.lastDetectedSleepStart == nil ? L("Ingen detektion än") : L("Senaste insomning"))
                                     .font(.system(size: 15, weight: .medium))
                                     .foregroundStyle(p.text)
                                 if let d = hk.lastDetectedSleepStart {
@@ -349,7 +358,7 @@ struct AlarmView: View {
                 // Sömnlängd
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        Text("SÖMNLÄNGD")
+                        Text(L("SÖMNLÄNGD"))
                             .font(.system(size: 11, weight: .heavy))
                             .tracking(1)
                             .foregroundStyle(p.textSecondary)
@@ -372,14 +381,14 @@ struct AlarmView: View {
                                 }
                             }
                         }
-                        ThemeChip(title: "Egen", selected: useCustom, palette: p) {
+                        ThemeChip(title: L("Egen"), selected: useCustom, palette: p) {
                             withAnimation(.easeInOut(duration: 0.2)) { useCustom = true }
                         }
                     }
 
                     if useCustom {
                         SliderRow(
-                            title: "Timmar",
+                            title: L("Timmar"),
                             valueText: String(format: "%.1f h", customHours),
                             value: $customHours,
                             range: 1...12,
@@ -394,7 +403,7 @@ struct AlarmView: View {
                 // Smart fönster
                 VStack(alignment: .leading, spacing: 16) {
                     SliderRow(
-                        title: "Smart fönster",
+                        title: L("Smart fönster"),
                         valueText: "\(Int(smartWindowMinutes)) min",
                         value: $smartWindowMinutes,
                         range: 0...60,
@@ -403,7 +412,7 @@ struct AlarmView: View {
                     )
 
                     SliderRow(
-                        title: "Steg i fönstret",
+                        title: L("Steg i fönstret"),
                         valueText: "\(Int(windowStepMinutes)) min",
                         value: $windowStepMinutes,
                         range: 1...15,
@@ -411,7 +420,7 @@ struct AlarmView: View {
                         palette: p
                     )
 
-                    Text("Larmet väcker dig någonstans i fönstret före mål­tiden — ju mindre steg, desto tätare koll.")
+                    Text(L("Larmet väcker dig någonstans i fönstret före måltiden — ju mindre steg, desto tätare koll."))
                         .font(.system(size: 12))
                         .foregroundStyle(p.textSecondary)
                 }
@@ -420,21 +429,21 @@ struct AlarmView: View {
 
                 // Snooze + etikett
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("SNOOZE")
+                    Text(L("SNOOZE"))
                         .font(.system(size: 11, weight: .heavy))
                         .tracking(1)
                         .foregroundStyle(p.textSecondary)
 
                     HStack(spacing: 8) {
                         ForEach([3, 5, 7, 9, 10, 15], id: \.self) { v in
-                            ThemeChip(title: "\(v) min", selected: snoozeMinutes == v, palette: p) {
+                            ThemeChip(title: L("%d min", v), selected: snoozeMinutes == v, palette: p) {
                                 withAnimation(.easeInOut(duration: 0.2)) { snoozeMinutes = v }
                             }
                         }
                     }
                 }
 
-                ThemedField(title: "Etikett", text: $label, palette: p)
+                ThemedField(title: L("Etikett"), text: $label, palette: p)
             }
         }
     }
@@ -450,24 +459,24 @@ struct AlarmView: View {
     private var watchCard: some View {
         ThemedCard(palette: p) {
             VStack(alignment: .leading, spacing: 14) {
-                CardHeader(title: "Apple Watch", systemImage: "applewatch", palette: p)
+                CardHeader(title: L("Apple Watch"), systemImage: "applewatch", palette: p)
 
                 VStack(spacing: 12) {
-                    LabeledRow(title: "Parad", systemImage: "link", palette: p) {
+                    LabeledRow(title: L("Parad"), systemImage: "link", palette: p) {
                         statusIcon(wc.isPaired)
                     }
-                    LabeledRow(title: "Klockapp installerad", systemImage: "square.and.arrow.down.on.square", palette: p) {
+                    LabeledRow(title: L("Klockapp installerad"), systemImage: "square.and.arrow.down.on.square", palette: p) {
                         // WCSession-flaggan är opålitlig: den uppdateras bara vid aktivering.
                         // Har klockan hört av sig någon gång ÄR appen installerad.
                         statusIcon(wc.watchAppConfirmedInstalled)
                     }
-                    LabeledRow(title: "Nåbar nu", systemImage: "dot.radiowaves.left.and.right", palette: p) {
+                    LabeledRow(title: L("Nåbar nu"), systemImage: "dot.radiowaves.left.and.right", palette: p) {
                         // isReachable är bara sant medan klockappen är öppen i förgrunden —
                         // en stängd app är inte ett fel, visa senaste kontakt i stället.
                         if wc.isReachable {
                             statusIcon(true)
                         } else if let contact = wc.lastWatchContact {
-                            Text("i bakgrunden · \(contact.formattedTimeSV())")
+                            Text(L("i bakgrunden · %@", contact.formattedTimeSV()))
                                 .font(.system(size: 12, weight: .semibold))
                                 .foregroundStyle(p.textSecondary)
                         } else {
@@ -476,7 +485,7 @@ struct AlarmView: View {
                     }
                 }
 
-                SecondaryButton(title: "Hämta plan från klockan", systemImage: "arrow.down.circle.fill", palette: p) {
+                SecondaryButton(title: L("Hämta plan från klockan"), systemImage: "arrow.down.circle.fill", palette: p) {
                     wc.requestPlanFromWatch()
                 }
 
@@ -554,7 +563,7 @@ struct AlarmView: View {
             smartWindowSeconds: smartWindowMinutes * 60,
             windowStepSeconds: windowStepMinutes * 60,
             snoozeMinutes: snoozeMinutes,
-            label: label.isEmpty ? "Sömn-larm" : label
+            label: label.isEmpty ? L("Sömn-larm") : label
         )
         plan.notifier = "phone"
         store.currentPlan = plan

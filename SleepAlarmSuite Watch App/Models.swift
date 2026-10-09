@@ -72,10 +72,10 @@ enum Preset: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .h6: return "6 timmar"
-        case .h7_5: return "7.5 timmar"
-        case .h8: return "8 timmar"
-        case .h9: return "9 timmar"
+        case .h6: return L("6 timmar")
+        case .h7_5: return L("7.5 timmar")
+        case .h8: return L("8 timmar")
+        case .h9: return L("9 timmar")
         }
     }
 }
@@ -89,17 +89,17 @@ enum StartModeOption: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .now: return "Nu"
-        case .manual: return "Manuellt"
-        case .autoHK: return "Auto (HealthKit)"
+        case .now: return L("Nu")
+        case .manual: return L("Manuellt")
+        case .autoHK: return L("Auto (HealthKit)")
         }
     }
 
     var short: String {
         switch self {
-        case .now: return "Nu"
-        case .manual: return "Klockan"
-        case .autoHK: return "Auto"
+        case .now: return L("Nu")
+        case .manual: return L("Klockan")
+        case .autoHK: return L("Auto")
         }
     }
 

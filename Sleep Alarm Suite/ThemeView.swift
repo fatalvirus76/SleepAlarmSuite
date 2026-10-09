@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ThemeView: View {
     @ObservedObject private var theme = ThemeManager.shared
+    @ObservedObject private var i18n = I18nManager.shared
 
     private var p: ThemePalette { theme.palette }
 
@@ -22,7 +23,9 @@ struct ThemeView: View {
                         }
                     }
 
-                    Text("Temat gäller hela appen och sparas direkt.")
+                    languageCard
+
+                    Text(L("Temat gäller hela appen och sparas direkt."))
                         .font(.system(size: 12))
                         .foregroundStyle(p.textSecondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -31,7 +34,7 @@ struct ThemeView: View {
                 .padding(.bottom, 32)
             }
             .background(AuroraBackground(palette: p))
-            .navigationTitle("Tema")
+            .navigationTitle(L("Tema"))
             .navigationBarTitleDisplayMode(.inline)
         }
     }
@@ -53,15 +56,15 @@ struct ThemeView: View {
                         }
 
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Så här ser larmkortet ut")
+                        Text(L("Så här ser larmkortet ut"))
                             .font(.system(size: 15, weight: .semibold))
                             .foregroundStyle(p.text)
                         Text(theme.theme.tagline)
                             .font(.system(size: 12))
                             .foregroundStyle(p.textSecondary)
                         HStack(spacing: 6) {
-                            StatusPill(text: "Notiser på", systemImage: "bell.fill", color: p.success)
-                            StatusPill(text: "8h mål", systemImage: "hourglass", color: p.accent)
+                            StatusPill(text: L("Notiser på"), systemImage: "bell.fill", color: p.success)
+                            StatusPill(text: "8h " + L("mål"), systemImage: "hourglass", color: p.accent)
                         }
                         .padding(.top, 2)
                     }
@@ -69,7 +72,7 @@ struct ThemeView: View {
                 }
 
                 HStack(spacing: 8) {
-                    Text("Accent")
+                    Text(L("Accent"))
                         .font(.system(size: 11, weight: .heavy))
                         .tracking(1)
                         .foregroundStyle(p.textSecondary)
@@ -77,6 +80,33 @@ struct ThemeView: View {
                     Capsule().fill(p.accent2).frame(width: 34, height: 12)
                     Spacer(minLength: 0)
                 }
+            }
+        }
+    }
+
+    // MARK: Språk
+
+    private var languageCard: some View {
+        ThemedCard(palette: p, padding: 18) {
+            VStack(alignment: .leading, spacing: 14) {
+                CardHeader(title: L("Språk"), systemImage: "globe", palette: p)
+
+                HStack(spacing: 8) {
+                    ForEach(AppLanguage.allCases) { lang in
+                        ThemeChip(
+                            title: lang.displayName,
+                            selected: i18n.language == lang,
+                            palette: p
+                        ) {
+                            withAnimation(.easeInOut(duration: 0.25)) { i18n.setLanguage(lang) }
+                        }
+                    }
+                    Spacer(minLength: 0)
+                }
+
+                Text(L("Språket gäller hela appen och sparas direkt."))
+                    .font(.system(size: 12))
+                    .foregroundStyle(p.textSecondary)
             }
         }
     }

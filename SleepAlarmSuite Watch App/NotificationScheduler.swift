@@ -19,10 +19,10 @@ final class AlarmScheduler: ObservableObject {
         do {
             let granted = try await UNUserNotificationCenter.current()
                 .requestAuthorization(options: [.alert, .sound, .badge])
-            self.lastError = granted ? nil : "Notiser nekades. Slå på i Inställningar."
+            self.lastError = granted ? nil : L("Notiser nekades. Slå på i Inställningar.")
             refreshAuthStatus()
         } catch {
-            self.lastError = "Kunde inte begära notiser: \(error.localizedDescription)"
+            self.lastError = L("Kunde inte begära notiser: %@", error.localizedDescription)
             refreshAuthStatus()
         }
     }
@@ -48,8 +48,8 @@ final class AlarmScheduler: ObservableObject {
             let content = UNMutableNotificationContent()
             content.title = "⏰ \(plan.label)"
             content.body = fireDates.count > 1
-                ? "Väckningsfönster \(i+1)/\(fireDates.count). Öppna appen för snooze/stop."
-                : "Dags att vakna! Öppna appen för snooze/stop."
+                ? L("Väckningsfönster %d/%d. Öppna appen för snooze/stop.", i + 1, fireDates.count)
+                : L("Dags att vakna! Öppna appen för snooze/stop.")
             content.sound = .default
             // Bryter igenom Fokus/läggdags-läge.
             content.interruptionLevel = .timeSensitive
@@ -67,7 +67,7 @@ final class AlarmScheduler: ObservableObject {
                 try await UNUserNotificationCenter.current().add(request)
                 self.lastError = nil
             } catch {
-                self.lastError = "Kunde inte schemalägga: \(error.localizedDescription)"
+                self.lastError = L("Kunde inte schemalägga: %@", error.localizedDescription)
             }
         }
     }

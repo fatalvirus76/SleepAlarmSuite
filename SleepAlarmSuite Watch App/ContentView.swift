@@ -9,6 +9,7 @@ struct ContentView: View {
     @EnvironmentObject private var wc: WatchConnectivityManager
     @ObservedObject private var ringer = WatchAlarmRinger.shared
     @ObservedObject private var theme = WatchThemeManager.shared
+    @ObservedObject private var i18n = I18nManager.shared
 
     @AppStorage("useCustom", store: AppConfig.defaults) private var useCustom: Bool = false
     @AppStorage("presetRaw", store: AppConfig.defaults) private var presetRaw: String = Preset.h8.rawValue
@@ -16,7 +17,7 @@ struct ContentView: View {
     @AppStorage("smartWindowMinutes", store: AppConfig.defaults) private var smartWindowMinutes: Double = 20
     @AppStorage("windowStepMinutes", store: AppConfig.defaults) private var windowStepMinutes: Double = 5
     @AppStorage("snoozeMinutes", store: AppConfig.defaults) private var snoozeMinutes: Int = 9
-    @AppStorage("label", store: AppConfig.defaults) private var label: String = "Sömn-larm"
+    @AppStorage("label", store: AppConfig.defaults) private var label: String = L("Sömn-larm")
 
     private var p: WatchPalette { theme.palette }
     private var preset: Preset { Preset(rawValue: presetRaw) ?? .h8 }
@@ -55,7 +56,7 @@ struct ContentView: View {
                 if let err = hk.lastError {
                     messageLine(err, color: p.warnSafe)
                 }
-                messageLine(ringer.isRinging ? "LARM RINGER" : ringer.statusText,
+                messageLine(ringer.isRinging ? L("LARM RINGER") : ringer.statusText,
                             color: ringer.isRinging ? p.dangerSafe : p.textSecondary)
             }
             .padding(.horizontal, 2)
@@ -87,7 +88,7 @@ struct ContentView: View {
                             Image(systemName: activePlan == nil ? "moon.zzz.fill" : "moon.stars.fill")
                                 .font(.system(size: 10, weight: .bold))
                                 .foregroundStyle(p.accent)
-                            Text(activePlan == nil ? "INGET LARM" : "VÄCKNING")
+                            Text(activePlan == nil ? L("INGET LARM") : L("VÄCKNING"))
                                 .font(.system(size: 11, weight: .heavy))
                                 .tracking(0.5)
                                 .foregroundStyle(p.textSecondary)
@@ -142,10 +143,10 @@ struct ContentView: View {
     }
 
     private func heroSubline(at date: Date) -> String {
-        guard let plan = activePlan else { return "Tryck Starta" }
+        guard let plan = activePlan else { return L("Tryck Starta") }
         let left = plan.lastFireDate.timeIntervalSince(date)
-        if left <= 0 { return "passerad" }
-        return "\(TimeInterval(left).asHoursMinutesSV()) kvar"
+        if left <= 0 { return L("passerad") }
+        return L("%@ kvar", TimeInterval(left).asHoursMinutesSV())
     }
 
     // MARK: Pills
@@ -153,17 +154,17 @@ struct ContentView: View {
     private var quickPills: some View {
         HStack(spacing: 6) {
             WatchPill(
-                text: notificationsOn ? "Notiser" : "Inga notiser",
+                text: notificationsOn ? L("Notiser") : L("Inga notiser"),
                 systemImage: notificationsOn ? "bell.fill" : "bell.slash.fill",
                 color: notificationsOn ? p.successSafe : p.dangerSafe
             )
             WatchPill(
-                text: wc.isReachable ? "iPhone nåbar" : (wc.isActivated ? "Synkad" : "Ej synkad"),
+                text: wc.isReachable ? L("iPhone nåbar") : (wc.isActivated ? L("Synkad") : L("Ej synkad")),
                 systemImage: "applewatch",
                 color: wc.isReachable ? p.successSafe : p.textSecondary
             )
             WatchPill(
-                text: ringer.hasScheduledAlarm ? "Klocklarm" : "Inget klocklarm",
+                text: ringer.hasScheduledAlarm ? L("Klocklarm") : L("Inget klocklarm"),
                 systemImage: "alarm.fill",
                 color: ringer.hasScheduledAlarm ? p.successSafe : p.textSecondary
             )
@@ -176,17 +177,17 @@ struct ContentView: View {
     private var actions: some View {
         VStack(spacing: 9) {
             if scheduler.authorizationStatus == .notDetermined {
-                WatchActionButton(title: "Tillåt notiser", systemImage: "bell.badge.fill", palette: p, prominent: false) {
+                WatchActionButton(title: L("Tillåt notiser"), systemImage: "bell.badge.fill", palette: p, prominent: false) {
                     Task { await scheduler.requestAuthorization() }
                 }
             }
 
-            WatchActionButton(title: "Starta sömn-larm", systemImage: "bed.double.fill", palette: p) {
+            WatchActionButton(title: L("Starta sömn-larm"), systemImage: "bed.double.fill", palette: p) {
                 Task { await startSleep() }
             }
 
             if let plan = activePlan {
-                WatchActionButton(title: "Snooze +\(plan.snoozeMinutes)", systemImage: "clock.arrow.circlepath", palette: p, prominent: false) {
+                WatchActionButton(title: L("Snooze") + " +\(plan.snoozeMinutes)", systemImage: "clock.arrow.circlepath", palette: p, prominent: false) {
                     Task {
                         let snoozed = await scheduler.snooze(plan: plan)
                         store.currentPlan = snoozed
@@ -198,7 +199,7 @@ struct ContentView: View {
                 }
 
                 HStack(spacing: 8) {
-                    WatchActionButton(title: "Stoppa", systemImage: "stop.fill", palette: p, prominent: false, tint: p.dangerSafe) {
+                    WatchActionButton(title: L("Stoppa"), systemImage: "stop.fill", palette: p, prominent: false, tint: p.dangerSafe) {
                         Task {
                             ringer.cancel()
                             await scheduler.clearPendingForPrefix()
@@ -208,12 +209,12 @@ struct ContentView: View {
                         }
                     }
 
-                    WatchActionButton(title: "Testa larm", systemImage: "alarm.fill", palette: p, prominent: false) {
+                    WatchActionButton(title: L("Testa larm"), systemImage: "alarm.fill", palette: p, prominent: false) {
                         ringer.ringNow(seconds: 8, restoreFireDate: activePlan?.lastFireDate)
                     }
                 }
             } else {
-                WatchActionButton(title: "Testa larm", systemImage: "alarm.fill", palette: p, prominent: false) {
+                WatchActionButton(title: L("Testa larm"), systemImage: "alarm.fill", palette: p, prominent: false) {
                     ringer.ringNow(seconds: 8)
                 }
             }
@@ -225,14 +226,14 @@ struct ContentView: View {
     private var planSummary: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 9) {
-                WatchSectionTitle(title: "Plan", systemImage: "slider.horizontal.3", palette: p)
+                WatchSectionTitle(title: L("Plan"), systemImage: "slider.horizontal.3", palette: p)
 
-                row("Etikett", label.isEmpty ? "Sömn-larm" : label)
-                row("Sömnlängd", durationSeconds.asHoursMinutesSV())
-                row("Smart fönster", smartWindowMinutes > 0 ? "\(Int(smartWindowMinutes)) min" : "Av")
-                row("Snooze", "\(snoozeMinutes) min")
+                row(L("Etikett"), label.isEmpty ? L("Sömn-larm") : label)
+                row(L("Sömnlängd"), durationSeconds.asHoursMinutesSV())
+                row(L("Smart fönster"), smartWindowMinutes > 0 ? L("%d min", Int(smartWindowMinutes)) : L("Av"))
+                row(L("Snooze"), L("%d min", snoozeMinutes))
 
-                Text("Ändra under Planera-fliken.")
+                Text(L("Ändra under Planera-fliken."))
                     .font(.system(size: 11))
                     .foregroundStyle(p.textSecondary)
             }
@@ -293,7 +294,7 @@ struct ContentView: View {
             smartWindowSeconds: smartWindowMinutes * 60,
             windowStepSeconds: windowStepMinutes * 60,
             snoozeMinutes: snoozeMinutes,
-            label: label.isEmpty ? "Sömn-larm" : label
+            label: label.isEmpty ? L("Sömn-larm") : label
         )
         plan.notifier = "watch"
         store.currentPlan = plan

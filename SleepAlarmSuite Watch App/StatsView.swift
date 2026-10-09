@@ -4,6 +4,7 @@ import SwiftUI
 struct StatsView: View {
     @EnvironmentObject private var store: AlarmStore
     @ObservedObject private var theme = WatchThemeManager.shared
+    @ObservedObject private var i18n = I18nManager.shared
 
     private var p: WatchPalette { theme.palette }
     private var stats: (count: Int, avgHours: Double, last7AvgHours: Double) { store.stats() }
@@ -27,11 +28,11 @@ struct StatsView: View {
     private var numbersCard: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 10) {
-                WatchSectionTitle(title: "Översikt", systemImage: "chart.bar.fill", palette: p)
+                WatchSectionTitle(title: L("Översikt"), systemImage: "chart.bar.fill", palette: p)
 
-                bigRow(value: "\(stats.count)", unit: "pass", title: "Loggade")
-                bigRow(value: String(format: "%.1f", stats.last7AvgHours), unit: "h", title: "Snitt senaste 7")
-                bigRow(value: String(format: "%.1f", stats.avgHours), unit: "h", title: "Snitt alla")
+                bigRow(value: "\(stats.count)", unit: L("pass"), title: L("Loggade"))
+                bigRow(value: String(format: "%.1f", stats.last7AvgHours), unit: "h", title: L("Snitt senaste 7"))
+                bigRow(value: String(format: "%.1f", stats.avgHours), unit: "h", title: L("Snitt alla"))
             }
         }
     }
@@ -63,10 +64,10 @@ struct StatsView: View {
     private var chartCard: some View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 10) {
-                WatchSectionTitle(title: "Senaste passen", systemImage: "chart.line.uptrend.xyaxis", palette: p)
+                WatchSectionTitle(title: L("Senaste passen"), systemImage: "chart.line.uptrend.xyaxis", palette: p)
 
                 if chartItems.isEmpty {
-                    Text("Ingen historik än.")
+                    Text(L("Ingen historik än."))
                         .font(.system(size: 13))
                         .foregroundStyle(p.textSecondary)
                 } else {
@@ -86,7 +87,7 @@ struct StatsView: View {
                     }
                     .frame(height: 74)
 
-                    Text("Timmar per pass (planerad sömnlängd)")
+                    Text(L("Timmar per pass (planerad sömnlängd)"))
                         .font(.system(size: 11))
                         .foregroundStyle(p.textSecondary)
                 }
@@ -100,12 +101,12 @@ struct StatsView: View {
         WatchCard(palette: p, padding: 12) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack(spacing: 6) {
-                    WatchSectionTitle(title: "Historik", systemImage: "list.bullet", palette: p)
+                    WatchSectionTitle(title: L("Historik"), systemImage: "list.bullet", palette: p)
                     if !store.history.isEmpty {
                         Button {
                             store.clearHistory()
                         } label: {
-                            Text("Rensa")
+                            Text(L("Rensa"))
                                 .font(.system(size: 12, weight: .bold))
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 4)
@@ -117,7 +118,7 @@ struct StatsView: View {
                 }
 
                 if store.history.isEmpty {
-                    Text("Ingen historik än.")
+                    Text(L("Ingen historik än."))
                         .font(.system(size: 13))
                         .foregroundStyle(p.textSecondary)
                 } else {

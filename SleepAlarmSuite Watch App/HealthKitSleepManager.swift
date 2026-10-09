@@ -17,7 +17,7 @@ final class HealthKitSleepManager: ObservableObject {
 
     func requestAuthorization() async {
         guard isAvailable, let type = sleepType else {
-            lastError = "HealthKit är inte tillgängligt på den här enheten."
+            lastError = L("HealthKit är inte tillgängligt på den här enheten.")
             return
         }
         do {
@@ -26,7 +26,7 @@ final class HealthKitSleepManager: ObservableObject {
             lastError = nil
         } catch {
             authorized = false
-            lastError = "HealthKit permission misslyckades: \(error.localizedDescription)"
+            lastError = L("HealthKit permission misslyckades: %@", error.localizedDescription)
         }
     }
 
