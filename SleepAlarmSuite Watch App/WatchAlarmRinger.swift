@@ -31,6 +31,8 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
     private var scheduledFireDate: Date?
     /// Sluttiden för planen vi vill larma på. nil = användaren har stoppat.
     private var wantedFireDate: Date?
+    /// Vald ringsignal för planen (spelas av startBeeping).
+    private var chosenSound: AlarmSound?
     /// false = användaren har stoppat; en session som ändå startar ska inte ringa.
     private var ringEnabled = false
     private var audio: AVAudioPlayer?
@@ -50,8 +52,10 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
     // MARK: - Schemaläggning
 
     /// Schemalägger (eller flyttar) larmet till `fireDate`.
-    func schedule(fireDate: Date) {
+    /// sound = planens valda ringsignal (nil vid återförsök — då behålls tidigare val).
+    func schedule(fireDate: Date, sound: AlarmSound? = nil) {
         wantedFireDate = fireDate
+        if let sound { chosenSound = sound }
         ringEnabled = true
         guard fireDate > Date() else {
             lastError = L("Tiden har redan passerat — inget klocklarm schemalagt.")
@@ -88,7 +92,7 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
            session != nil {
             return
         }
-        schedule(fireDate: wanted)
+        schedule(fireDate: wanted, sound: chosenSound)
     }
 
     /// Stoppar larmet helt (Stoppa-knappen eller stopp skickat från iPhone).
@@ -126,7 +130,7 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
             self.testStopTask = nil
             self.scheduledFireDate = nil
             if let restore = restoreFireDate, restore > Date() {
-                self.schedule(fireDate: restore)
+                self.schedule(fireDate: restore, sound: self.chosenSound)
             } else {
                 self.wantedFireDate = nil
                 self.ringEnabled = false
@@ -182,11 +186,18 @@ final class WatchAlarmRinger: NSObject, ObservableObject {
         do {
             try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.duckOthers])
             try? AVAudioSession.sharedInstance().setActive(true)
-            let player = try AVAudioPlayer(data: Self.beepWAV())
-            player.numberOfLoops = -1        // loopar tills vi stoppar
-            player.volume = 0.9
-            player.play()
-            audio = player
+            // Vald ringsignal (.caf i bundlen) om planen har en, annars den gamla
+            // genererade tvåtonssignalen.
+            if let file = chosenSound?.soundFileName,
+               let url = Bundle.main.url(forResource: file, withExtension: "caf"),
+               let player = try? AVAudioPlayer(contentsOf: url) {
+                self.audio = player
+            } else {
+                audio = try AVAudioPlayer(data: Self.beepWAV())
+            }
+            audio?.numberOfLoops = -1        // loopar tills vi stoppar
+            audio?.volume = 0.9
+            audio?.play()
         } catch {
             lastError = L("Ljudet kunde inte startas: %@", error.localizedDescription)
         }

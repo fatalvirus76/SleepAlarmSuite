@@ -1,5 +1,6 @@
 import Foundation
 import AlarmKit
+import ActivityKit
 import SwiftUI
 import Combine
 
@@ -53,9 +54,17 @@ final class PhoneAlarmManager: ObservableObject {
                 metadata: SleepAlarmMetadata(planID: plan.id),
                 tintColor: .orange
             )
+            // Egen ringsignal om planen har en (.caf i bundlen), annars systemets ljud.
+            let sound: ActivityKit.AlertConfiguration.AlertSound
+            if let file = plan.alarmSound?.soundFileName {
+                sound = .named("\(file).caf")
+            } else {
+                sound = .default
+            }
             let config = AlarmManager.AlarmConfiguration(
                 schedule: .fixed(fireDate),
-                attributes: attributes
+                attributes: attributes,
+                sound: sound
             )
             _ = try await AlarmManager.shared.schedule(id: plan.id, configuration: config)
             lastError = nil

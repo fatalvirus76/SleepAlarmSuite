@@ -1,5 +1,6 @@
 import SwiftUI
 import WatchKit
+import AVFoundation
 
 // Flik 2: Planera — alla inställningar med stora, lätttryckta kontroller.
 struct PlanView: View {
@@ -31,6 +32,13 @@ struct PlanView: View {
         GridItem(.flexible(), spacing: 6),
         GridItem(.flexible(), spacing: 6)
     ]
+    private let twoColumns = [
+        GridItem(.flexible(), spacing: 6),
+        GridItem(.flexible(), spacing: 6)
+    ]
+
+    @AppStorage("alarmSound", store: AppConfig.defaults) private var alarmSoundRaw: String = AlarmSound.default.rawValue
+    private var alarmSound: AlarmSound { AlarmSound(rawValue: alarmSoundRaw) ?? .default }
 
     var body: some View {
         ScrollView {
@@ -39,6 +47,7 @@ struct PlanView: View {
                 durationCard
                 windowCard
                 snoozeCard
+                soundCard
                 labelCard
 
                 Text(L("%@ sömn från %@", durationSeconds.asHoursMinutesSV(), startPreview()))
@@ -236,6 +245,28 @@ struct PlanView: View {
         }
     }
 
+    // MARK: Ringsignal
+
+    private var soundCard: some View {
+        WatchCard(palette: p, padding: 12) {
+            VStack(alignment: .leading, spacing: 10) {
+                WatchSectionTitle(title: L("Ringsignal"), systemImage: "bell.fill", palette: p)
+
+                LazyVGrid(columns: twoColumns, spacing: 6) {
+                    ForEach(AlarmSound.allCases) { s in
+                        WatchChip(title: s.title, selected: alarmSound == s, palette: p) {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                alarmSoundRaw = s.rawValue
+                                // kort förhandsgranskning direkt i val-caset
+                                WatchSoundPreview.play(s)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // MARK: Logik
 
     private func autoDetect() async {
@@ -246,5 +277,23 @@ struct PlanView: View {
         }
         _ = await hk.detectRecentSleepStart()
         WKInterfaceDevice.current().play(.click)
+    }
+}
+
+// MARK: - Förhandsgranskning av ringsignal
+
+/// Spelar en kort bit av vald ringsignal direkt vid val
+/// (normal uppspelning sker via WatchAlarmRinger i själva larmet).
+@MainActor
+enum WatchSoundPreview {
+    private static var player: AVAudioPlayer?
+
+    static func play(_ sound: AlarmSound) {
+        guard let file = sound.soundFileName,
+              let url = Bundle.main.url(forResource: file, withExtension: "caf") else { return }
+        try? AVAudioSession.sharedInstance().setCategory(.playback)
+        try? AVAudioSession.sharedInstance().setActive(true)
+        player = try? AVAudioPlayer(contentsOf: url)
+        player?.play()
     }
 }

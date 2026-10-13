@@ -33,7 +33,7 @@ final class AlarmStore: ObservableObject {
             return
         }
         Task { await scheduler.schedule(plan: plan) }
-        WatchAlarmRinger.shared.schedule(fireDate: plan.lastFireDate)
+        WatchAlarmRinger.shared.schedule(fireDate: plan.lastFireDate, sound: plan.alarmSound)
     }
 
     /// Stopp-kommando från iPhone: rensa lokalt + lokala notiser + klocklarmet.

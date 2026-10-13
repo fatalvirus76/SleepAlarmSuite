@@ -26,6 +26,13 @@ nonisolated enum I18nTables {
         "SNOOZE": "SNOOZE",
         "Snooze": "Snooze",
         "Snooze (min)": "Snooze (min)",
+        "RINGSIGNAL": "ALARM SOUND",
+        "Ringsignal": "Alarm sound",
+        "Standard": "Default",
+        "Klockspel": "Chimes",
+        "Puls": "Pulse",
+        "Radar": "Radar",
+        "Bjällror": "Bells",
         "Accent": "Accent",
         "Om": "About",
 

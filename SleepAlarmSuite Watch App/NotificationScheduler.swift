@@ -50,6 +50,8 @@ final class AlarmScheduler: ObservableObject {
             content.body = fireDates.count > 1
                 ? L("Väckningsfönster %d/%d. Öppna appen för snooze/stop.", i + 1, fireDates.count)
                 : L("Dags att vakna! Öppna appen för snooze/stop.")
+            // watchOS stödjer inte egna notisljud (UNNotificationSound(named:) saknas) —
+            // klockans ljud spelas av WatchAlarmRinger i larmet i stället.
             content.sound = .default
             // Bryter igenom Fokus/läggdags-läge.
             content.interruptionLevel = .timeSensitive

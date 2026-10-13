@@ -1,5 +1,6 @@
 import SwiftUI
 import UserNotifications
+import AVFoundation
 
 // Rot-vy: flikar (Larm / Statistik / Tema). Temat styr färger, bakgrund och material.
 struct ContentView: View {
@@ -44,6 +45,8 @@ struct AlarmView: View {
     @AppStorage("windowStepMinutes") private var windowStepMinutes: Double = 5
     @AppStorage("snoozeMinutes") private var snoozeMinutes: Int = 9
     @AppStorage("label") private var label: String = L("Sömn-larm")
+    @AppStorage("alarmSound") private var alarmSoundRaw: String = AlarmSound.default.rawValue
+    private var alarmSound: AlarmSound { AlarmSound(rawValue: alarmSoundRaw) ?? .default }
 
     // Sparas mellan appstarter (samma beteende som klockappen).
     @AppStorage("startModeRaw") private var startModeRaw: String = StartMode.now.rawValue
@@ -97,9 +100,14 @@ struct AlarmView: View {
                     if let err = scheduler.lastError {
                         errorLine(err, color: p.danger, icon: "exclamationmark.triangle.fill")
                     }
+                    // AlarmKit-fel måste synas: tysta misslyckanden här = larm som aldrig ringer.
+                    if let err = phoneAlarms.lastError {
+                        errorLine(err, color: p.danger, icon: "alarm.wave.async")
+                    }
                     if let err = hk.lastError {
                         errorLine(err, color: p.warning, icon: "heart.slash.fill")
                     }
+
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 32)
@@ -443,6 +451,29 @@ struct AlarmView: View {
                     }
                 }
 
+                divider
+
+                // Ringsignal — valfri väckningsljud som spelar som AlarmKit-larm
+                // (bryter tyst läge/Fokus på samma sätt som systemljudet).
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(L("RINGSIGNAL"))
+                        .font(.system(size: 11, weight: .heavy))
+                        .tracking(1)
+                        .foregroundStyle(p.textSecondary)
+
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+                        ForEach(AlarmSound.allCases) { s in
+                            ThemeChip(title: s.title, selected: alarmSound == s, palette: p) {
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    alarmSoundRaw = s.rawValue
+                                    // kort förhandsgranskning direkt i val-caset
+                                    AlarmSoundPreview.play(s)
+                                }
+                            }
+                        }
+                    }
+                }
+
                 ThemedField(title: L("Etikett"), text: $label, palette: p)
             }
         }
@@ -566,6 +597,7 @@ struct AlarmView: View {
             label: label.isEmpty ? L("Sömn-larm") : label
         )
         plan.notifier = "phone"
+        plan.alarmSound = alarmSound
         store.currentPlan = plan
         store.addSession(SleepSession(
             id: UUID(),
@@ -582,5 +614,27 @@ struct AlarmView: View {
 
         // Synka planen till klockan (den schemalägger sina egna notiser).
         wc.sendPlan(plan)
+    }
+}
+
+// MARK: - Förhandsgranskning av ringsignal
+
+/// Spelar en kort bit av vald ringsignal direkt när användaren trycker på den
+/// (normal uppspelning sker via AlarmKit i själva larmet).
+@MainActor
+enum AlarmSoundPreview {
+    private static var player: AVAudioPlayer?
+
+    static func play(_ sound: AlarmSound) {
+        guard let file = sound.soundFileName,
+              let url = Bundle.main.url(forResource: file, withExtension: "caf") else { return }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.play()
+        } catch {
+            // Förhandsgranskning är bäst-effort — larmet använder ändå rätt fil via AlarmKit.
+        }
     }
 }

@@ -51,7 +51,12 @@ final class AlarmScheduler: ObservableObject {
             content.body = fireDates.count > 1
                 ? L("Väckningsfönster %d/%d. Öppna appen för snooze/stop.", i + 1, fireDates.count)
                 : L("Dags att vakna! Öppna appen för snooze/stop.")
-            content.sound = .default
+            // Samma ringsignal som AlarmKit-larmet (nil = systemets ljud).
+            if let file = plan.alarmSound?.soundFileName {
+                content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: file + ".caf"))
+            } else {
+                content.sound = .default
+            }
             // Bryter igenom Fokus/läggdags-läge (tyst nedprioritering — ingen entitlement krävs).
             content.interruptionLevel = .timeSensitive
             content.relevanceScore = 1.0

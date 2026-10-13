@@ -192,7 +192,7 @@ struct ContentView: View {
                         let snoozed = await scheduler.snooze(plan: plan)
                         store.currentPlan = snoozed
                         await scheduler.schedule(plan: snoozed)
-                        ringer.schedule(fireDate: snoozed.lastFireDate)
+                        ringer.schedule(fireDate: snoozed.lastFireDate, sound: snoozed.alarmSound)
                         wc.sendPlan(snoozed)
                         WKInterfaceDevice.current().play(.directionDown)
                     }
@@ -311,7 +311,7 @@ struct ContentView: View {
         await scheduler.schedule(plan: plan)
         // Riktigt klocklarm: extended runtime-session som repeterar haptik + ljud
         // (och visar systemets larm-alert när appen inte är aktiv).
-        ringer.schedule(fireDate: plan.lastFireDate)
+        ringer.schedule(fireDate: plan.lastFireDate, sound: plan.alarmSound)
 
         // Synka planen till iPhone (den schemalägger sina egna notiser).
         wc.sendPlan(plan)
